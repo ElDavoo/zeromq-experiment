@@ -1,5 +1,22 @@
 #include "zhelpers.h"
 #include <unistd.h>
+#include "cJSON.h"
+
+void telemetry(void *publisher_tel, int count, double rtt){
+    //todo
+    // Creazione dell'oggetto JSON
+    cJSON *root = cJSON_CreateObject();
+
+    // Inserimento dei dati nella coppia
+    cJSON_AddNumberToObject(root, "count", count);
+    cJSON_AddNumberToObject(root, "rtt", rtt);
+
+    s_sendmore (publisher_tel, "TELEMETRY"); //envelope
+    s_send (publisher_tel, cJSON_Print(root)); //content
+    
+    // Deallocazione della memoria
+    cJSON_Delete(root);
+}
 
 int main (void){
     int count = 0;
@@ -9,11 +26,16 @@ int main (void){
     void *publisher = zmq_socket (context, ZMQ_PUB);
     zmq_bind (publisher, "tcp://*:5563");
 
-    // Prepare Pong context ad publisher
+    // Prepare Pong context and subscriber
     void *context_pong = zmq_ctx_new ();
     void *subscriber_pong = zmq_socket (context_pong, ZMQ_SUB);
     zmq_connect (subscriber_pong, "tcp://127.0.0.1:5564");
     zmq_setsockopt (subscriber_pong, ZMQ_SUBSCRIBE, "Pong", 1);
+
+    // Prepare publisher for telemetry
+    void *context_tel = zmq_ctx_new ();
+    void *publisher_tel = zmq_socket (context_tel, ZMQ_PUB);
+    zmq_bind (publisher_tel, "tcp://*:5565");
 
     /*
     Basically, it takes a little time (a few milliseconds) for the connection to be set up, 
@@ -35,7 +57,6 @@ int main (void){
         s_send (publisher, message); //content
         clock_t start_time = clock();
         printf ("Pingo\n");
-        free(message);
 
         //  Read envelope with address
         char *address = s_recv (subscriber_pong);
@@ -43,8 +64,10 @@ int main (void){
         char *contents = s_recv (subscriber_pong);
         clock_t end_time = clock();
         printf ("[%s] %s. RTT: %2f\n", address, contents, (double)(end_time - start_time) / CLOCKS_PER_SEC * 1000);
+        telemetry(publisher_tel, count, (double)(end_time - start_time) / CLOCKS_PER_SEC * 1000);
         free (address);
         free (contents);
+        free(message);
         s_sleep (250);
     }
     //  We never get here, but clean up anyhow
