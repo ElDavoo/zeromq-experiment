@@ -49,9 +49,9 @@ int main (void){
 
         char* message = (char*)malloc((count + 1) * sizeof(char)); // +1 for the null terminator
         for(int i=0; i<count; i++){
-            message[i] = '0';
+            message[i] = 'A';
         }
-        count++;
+        count=count+1000;
 
         s_sendmore (publisher, "PING"); //envelope
         s_send (publisher, message); //content
