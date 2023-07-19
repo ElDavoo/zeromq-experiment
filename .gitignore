@@ -1,6 +1,7 @@
-*
 !*/
 !*.*
 !Makefile
+!*.c
+!*.md
 pub_sub/libjson_utils.a
 pub_sub/cJSON.o

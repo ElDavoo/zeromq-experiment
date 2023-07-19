@@ -25,13 +25,43 @@ TODO: Spiegare con degli schemi come funziona la comunicazione intraprocesso, in
 TODO: Descrivere il setup dell'ambiente di sperimentazione:
 - Le specifiche del PC
 - Le specifiche della jetson
+```sh
+root@nano:~# lsb_release -a
+No LSB modules are available.
+Distributor ID: Ubuntu
+Description:    Ubuntu 20.04.6 LTS
+Release:        20.04
+Codename:       focal
+
+sudo jetson-release
+
+Software part of jetson-stats 4.2.2 - (c) 2023, Raffaello Bonghi
+Model: NVIDIA Jetson Nano Developer Kit - Jetpack 4.6 [L4T 32.6.1]
+NV Power Mode[0]: MAXN
+Serial Number: [XXX Show with: jetson_release -s XXX]
+Hardware:
+ - P-Number: p3448-0000
+ - Module: NVIDIA Jetson Nano (4 GB ram)
+Platform:
+ - Distribution: Ubuntu 20.04 focal
+ - Release: 4.9.253-tegra
+jtop:
+ - Version: 4.2.2
+ - Service: Inactive
+Libraries:
+ - CUDA: 10.2.300
+ - cuDNN: 8.2.1.32
+ - TensorRT: 8.0.1.6
+ - VPI: 1.1.15
+ - Vulkan: 1.2.141
+ - OpenCV: 4.6.0 - with CUDA: YES
+```
 - Tutte le configurazioni del SO
 - Ad esempio, io l'ubuntu 20 della jetson l'ho aggiornato
 - La versione del compilatore
 ## Metodologia di valutazione
 TODO: Spiegare in breve come è fatto il codice di benchmark.
-- Riportare tutti gli sgami fatti, come isolcpu
-- [Sgami](https://github.com/ZhenshengLee/ros2_jetson_benchmarks)  
+- Seguire [real-time-tricks](docs/real-time-tricks.md)
 - Riportare le flag del compilatore
 ## Risultati delle valutazioni
 [issue](https://github.com/ElDavoo/zeromq-experiment/issues/1)
