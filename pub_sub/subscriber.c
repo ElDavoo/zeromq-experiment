@@ -24,7 +24,7 @@ int main (void){
         char *address = s_recv (subscriber);
         //  Read message contents
         char *contents = s_recv (subscriber);
-        printf ("[%s] %s\n", address, contents);
+        printf ("[%s] %c\n", address, contents[0]);
         //printf ("[%s] \n", address);
         free (address);
         free (contents);

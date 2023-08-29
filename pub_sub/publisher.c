@@ -18,6 +18,11 @@ void telemetry(void *publisher_tel, int count, double rtt){
     cJSON_Delete(root);
 }
 
+#define SIZE 1000
+char message[SIZE + 1];
+// a timespec struct
+struct timespec timespec_start, timespec_end;
+
 int main (void){
     int count = 0;
 
@@ -47,28 +52,29 @@ int main (void){
 
     while (1) {
 
-        char* message = (char*)malloc((count + 1) * sizeof(char)); // +1 for the null terminator
-        for(int i=0; i<count; i++){
-            message[i] = 'A';
-        }
-        count=count+1000;
+        // Get a random printable character between 0x20 and 0x7e
+        char r = (char) (rand() % (0x7e - 0x20) + 0x20);
 
+        for(int i=0; i<SIZE; i++){
+            message[i] = r;
+        }
+        //count=count+1000;
+        char *address = NULL;
+        char *contents = NULL;
+        printf ("Pingo\n");
         s_sendmore (publisher, "PING"); //envelope
         s_send (publisher, message); //content
-        clock_t start_time = clock();
-        printf ("Pingo\n");
-
+        clock_gettime(CLOCK_MONOTONIC, &timespec_start);
         //  Read envelope with address
-        char *address = s_recv (subscriber_pong);
+        address = s_recv (subscriber_pong);
         //  Read message contents
-        char *contents = s_recv (subscriber_pong);
-        clock_t end_time = clock();
-        printf ("[%s] %s. RTT: %2f\n", address, contents, (double)(end_time - start_time) / CLOCKS_PER_SEC * 1000);
-        telemetry(publisher_tel, count, (double)(end_time - start_time) / CLOCKS_PER_SEC * 1000);
+        contents = s_recv (subscriber_pong);
+        clock_gettime(CLOCK_MONOTONIC, &timespec_end);
+        printf ("[%s] %s. RTT: %ld us\n", address, contents, (timespec_end.tv_nsec - timespec_start.tv_nsec)/1000);
+        telemetry(publisher_tel, count, (timespec_end.tv_nsec - timespec_start.tv_nsec)/1000);
         free (address);
         free (contents);
-        free(message);
-        s_sleep (250);
+        s_sleep (10);
     }
     //  We never get here, but clean up anyhow
     zmq_close (publisher);
