@@ -62,7 +62,8 @@ int main (void){
 
         char* message = (char*)malloc((count + 1) * sizeof(char)); // +1 for the null terminator
         for(int i=0; i<count; i++){
-            message[i] = 'A';
+            //message[i] = 'A';
+            message[i] = (char) (rand() % (0x7e - 0x20) + 0x20);
         }
         count=count+1000;
         char *address = NULL;
@@ -77,7 +78,8 @@ int main (void){
         contents = s_recv (subscriber_pong);
         clock_gettime(CLOCK_MONOTONIC, &timespec_end);
         printf ("[%s] %s. RTT: %ld us\n", address, contents, (timespec_end.tv_nsec - timespec_start.tv_nsec)/1000);
-        telemetry(publisher_tel, count, (timespec_end.tv_nsec - timespec_start.tv_nsec)/1000);
+        if (timespec_end.tv_nsec - timespec_start.tv_nsec >= 0) 
+            telemetry(publisher_tel, count, (timespec_end.tv_nsec - timespec_start.tv_nsec)/1000);
         free (address);
         free (contents);
         free (message);
