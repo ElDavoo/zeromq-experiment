@@ -19,7 +19,7 @@ void telemetry(void *publisher_tel, int count, double rtt){
 }
 
 #define SIZE 1000
-char message[SIZE + 1];
+//char message[SIZE + 1];
 // a timespec struct
 struct timespec timespec_start, timespec_end;
 
@@ -51,14 +51,20 @@ int main (void){
     s_sleep(3000); //IMPORTANT!!!
 
     while (1) {
-
+        
+        /*
         // Get a random printable character between 0x20 and 0x7e
         char r = (char) (rand() % (0x7e - 0x20) + 0x20);
 
         for(int i=0; i<SIZE; i++){
             message[i] = r;
+        }*/
+
+        char* message = (char*)malloc((count + 1) * sizeof(char)); // +1 for the null terminator
+        for(int i=0; i<count; i++){
+            message[i] = 'A';
         }
-        //count=count+1000;
+        count=count+1000;
         char *address = NULL;
         char *contents = NULL;
         printf ("Pingo\n");
@@ -74,6 +80,7 @@ int main (void){
         telemetry(publisher_tel, count, (timespec_end.tv_nsec - timespec_start.tv_nsec)/1000);
         free (address);
         free (contents);
+        free (message);
         s_sleep (10);
     }
     //  We never get here, but clean up anyhow
