@@ -4,3 +4,4 @@
 !Makefile
 *.a
 *.o
+.vscode/*
