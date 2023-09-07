@@ -11,6 +11,27 @@ Frame 2: Service name (printable string)
 Frames 3+: Request body (opaque binary)
 */
 #include "zhelpers.h"
+#include "cJSON.h"
+
+#define REQUESTS 100
+
+struct timespec timespec_start, timespec_end;
+
+void telemetry(void *publisher_tel, int count, double rtt){
+    //todo
+    // Creazione dell'oggetto JSON
+    cJSON *root = cJSON_CreateObject();
+
+    // Inserimento dei dati nella coppia
+    cJSON_AddNumberToObject(root, "count", count);
+    cJSON_AddNumberToObject(root, "rtt", rtt);
+
+    s_sendmore (publisher_tel, "TELEMETRY"); //envelope
+    s_send (publisher_tel, cJSON_Print(root)); //content
+    
+    // Deallocazione della memoria
+    cJSON_Delete(root);
+}
 
 int main (void) 
 {
@@ -20,15 +41,13 @@ int main (void)
     void *requester = zmq_socket (context, ZMQ_REQ);
     zmq_connect (requester, "tcp://localhost:5559");
 
-    /*int request_nbr;
-    for (request_nbr = 0; request_nbr != 10; request_nbr++) {
-        s_send (requester, "Hello");
-        char *string = s_recv (requester);
-        printf ("Received reply %d [%s]\n", request_nbr, string);
-        free (string);
-    }*/
+    // Prepare publisher for telemetry
+    void *context_tel = zmq_ctx_new ();
+    void *publisher_tel = zmq_socket (context_tel, ZMQ_PUB);
+    zmq_bind (publisher_tel, "tcp://*:5565");
+
     int request_nbr;
-    for (request_nbr = 0; request_nbr != 10; request_nbr++) {
+    for (request_nbr = 0; request_nbr != REQUESTS; request_nbr++) {
         zmq_msg_t part;
         zmq_msg_init_size (&part, sizeof("MDPC01"));
         memcpy (zmq_msg_data (&part), "MDPC01", sizeof("MDPC01"));
@@ -41,6 +60,9 @@ int main (void)
         memcpy (zmq_msg_data (&part), "request", sizeof("request"));
         zmq_msg_send (&part, requester, 0);
 
+        clock_gettime(CLOCK_MONOTONIC, &timespec_start);
+        int time = -1;
+        
         int more;
         size_t more_size = sizeof (more);
         do {
@@ -51,6 +73,12 @@ int main (void)
 
             /* Block until a message is available to be received from socket */
             rc = zmq_msg_recv (&part, requester, 0);
+            if (time == -1) {
+                /*Because of multipart message, we get the time just when receive
+                the header of the response*/
+                clock_gettime(CLOCK_MONOTONIC, &timespec_end);
+                time = 0;
+            }
             //assert (rc != -1);
             void* data = zmq_msg_data(&part);
             size_t size = zmq_msg_size(&part);
@@ -62,6 +90,8 @@ int main (void)
             zmq_msg_close (&part); 
             if (!more) printf("\n");
         } while (more);
+        if (timespec_end.tv_nsec - timespec_start.tv_nsec >= 0) 
+            telemetry(publisher_tel, 0, (timespec_end.tv_nsec - timespec_start.tv_nsec)/1000);
     }
     zmq_close (requester);
     zmq_ctx_destroy (context);
