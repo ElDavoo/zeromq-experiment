@@ -1,6 +1,16 @@
+/*
+Publisher will send a particular payload according on parameter passed to it:
+- no parameter: payload dimension increased every message;
+- integer parameter: payload dimension fixed (dim(parameter)).
+*/
+
 #include "zhelpers.h"
 #include <unistd.h>
 #include "cJSON.h"
+
+#ifndef CLOCK_MONOTONIC
+#define CLOCK_MONOTONIC 1
+#endif
 
 void telemetry(void *publisher_tel, int count, double rtt){
     //todo
@@ -18,12 +28,10 @@ void telemetry(void *publisher_tel, int count, double rtt){
     cJSON_Delete(root);
 }
 
-#define SIZE 1000
-//char message[SIZE + 1];
 // a timespec struct
 struct timespec timespec_start, timespec_end;
 
-int main (void){
+int main (int argc, char **argv){
     int count = 0;
 
     //  Prepare our context and publisher
@@ -50,22 +58,22 @@ int main (void){
     */
     s_sleep(3000); //IMPORTANT!!!
 
+    char *message = NULL;
     while (1) {
         
-        /*
-        // Get a random printable character between 0x20 and 0x7e
-        char r = (char) (rand() % (0x7e - 0x20) + 0x20);
-
-        for(int i=0; i<SIZE; i++){
-            message[i] = r;
-        }*/
-
-        char* message = (char*)malloc((count + 1) * sizeof(char)); // +1 for the null terminator
-        for(int i=0; i<count; i++){
-            //message[i] = 'A';
-            message[i] = (char) (rand() % (0x7e - 0x20) + 0x20);
+        if (argc == 1) {
+            message = (char*)malloc((count + 1) * sizeof(char)); // +1 for the null terminator
+            for(int i=0; i<count; i++){
+                message[i] = (char) (rand() % (0x7e - 0x20) + 0x20);
+            }
+            count=count+1000;
+        } else {
+            message = (char *)malloc((atoi(argv[1]) + 1) * sizeof(char));
+            for(int i=0; i<atoi(argv[1]); i++){
+                message[i] = (char) (rand() % (0x7e - 0x20) + 0x20);
+            }
         }
-        count=count+1000;
+        
         char *address = NULL;
         char *contents = NULL;
         printf ("Pingo\n");

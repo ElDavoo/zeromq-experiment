@@ -1,5 +1,6 @@
 {
     "files.associations": {
-        "zhelpers.h": "c"
+        "zhelpers.h": "c",
+        "bitset": "c"
     }
 }

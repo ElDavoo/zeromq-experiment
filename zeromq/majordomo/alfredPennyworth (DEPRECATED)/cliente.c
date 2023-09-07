@@ -35,7 +35,6 @@ void telemetry(void *publisher_tel, int count, double rtt){
 
 int main (void) 
 {
-    int count = 0;
     void *context = zmq_ctx_new ();
 
     //  Socket to talk to server
@@ -47,13 +46,8 @@ int main (void)
     void *publisher_tel = zmq_socket (context_tel, ZMQ_PUB);
     zmq_bind (publisher_tel, "tcp://*:5565");
 
-    //int request_nbr;
-    for ( ; ; ) {
-    //for (request_nbr = 0; request_nbr != REQUESTS; request_nbr++) {
-        char* message = (char*)malloc((count + 1) * sizeof(char)); // +1 for the null terminator
-        for(int i=0; i<count; i++) message[i] = (char) (rand() % (0x7e - 0x20) + 0x20);
-        count=count+1000;
-
+    int request_nbr;
+    for (request_nbr = 0; request_nbr != REQUESTS; request_nbr++) {
         zmq_msg_t part;
         zmq_msg_init_size (&part, sizeof("MDPC01"));
         memcpy (zmq_msg_data (&part), "MDPC01", sizeof("MDPC01"));
@@ -62,8 +56,8 @@ int main (void)
         zmq_msg_init_size (&part, sizeof("Service"));
         memcpy (zmq_msg_data (&part), "Service", sizeof("Service"));
         zmq_msg_send (&part, requester, ZMQ_SNDMORE);
-        zmq_msg_init_size (&part, (count + 1) * sizeof(char));
-        memcpy (zmq_msg_data (&part), message, (count + 1) * sizeof(char));
+        zmq_msg_init_size (&part, sizeof("request"));
+        memcpy (zmq_msg_data (&part), "request", sizeof("request"));
         zmq_msg_send (&part, requester, 0);
 
         clock_gettime(CLOCK_MONOTONIC, &timespec_start);
@@ -96,9 +90,8 @@ int main (void)
             zmq_msg_close (&part); 
             if (!more) printf("\n");
         } while (more);
-        free(message);
         if (timespec_end.tv_nsec - timespec_start.tv_nsec >= 0) 
-            telemetry(publisher_tel, count, (timespec_end.tv_nsec - timespec_start.tv_nsec)/1000);
+            telemetry(publisher_tel, 0, (timespec_end.tv_nsec - timespec_start.tv_nsec)/1000);
     }
     zmq_close (requester);
     zmq_ctx_destroy (context);

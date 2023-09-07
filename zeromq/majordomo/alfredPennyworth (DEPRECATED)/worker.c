@@ -1,9 +1,9 @@
-//  Worker
+//  Hello World worker
 //  Connects REP socket to tcp://localhost:5560
+//  Expects "Hello" from client, replies with "World"
 
 #include "zhelpers.h"
 #include <unistd.h>
-#include <pthread.h>
 
 int main (void) 
 {
