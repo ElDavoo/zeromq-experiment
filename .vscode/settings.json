@@ -1,0 +1,5 @@
+{
+    "C_Cpp.default.defines": [
+        "_POSIX_C_SOURCE=199309L"
+    ]
+}

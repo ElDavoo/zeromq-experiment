@@ -8,10 +8,6 @@ Publisher will send a particular payload according on parameter passed to it:
 #include <unistd.h>
 #include "cJSON.h"
 
-#ifndef CLOCK_MONOTONIC
-#define CLOCK_MONOTONIC 1
-#endif
-
 void telemetry(void *publisher_tel, int count, double rtt){
     //todo
     // Creazione dell'oggetto JSON

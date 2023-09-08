@@ -18,10 +18,6 @@ Frames 3+: Request body (opaque binary)
 */
 #include "zhelpers.h"
 #include "cJSON.h"
-
-#ifndef CLOCK_MONOTONIC
-#define CLOCK_MONOTONIC 1
-#endif
 #define REQUESTS 100
 
 struct timespec timespec_start, timespec_end;
