@@ -20,6 +20,7 @@ TODO: Creare una feature table in cui si confrontano i servizi offerti da ROS2 e
 
 TODO: Capire e spiegare con degli schemi come funziona la comunicazione intraprocesso, interprocesso e internodo su ROS2
 TODO: Spiegare con degli schemi come funziona la comunicazione intraprocesso, interprocesso e internodo su ZeroMQ
+![ROS2 Bozza di schema](https://github.com/ElDavoo/zeromq-experiment/assets/4050967/5eca201f-98d8-4ffa-913b-0ac451c3761a)
 # Valutazione
 ## Ambiente di valutazione
 TODO: Descrivere il setup dell'ambiente di sperimentazione:
