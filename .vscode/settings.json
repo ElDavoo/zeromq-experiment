@@ -1,5 +1,14 @@
 {
     "C_Cpp.default.defines": [
         "_POSIX_C_SOURCE=199309L"
-    ]
+    ],
+    "colcon.provideTasks": true,
+    "colcon.workspaceSetup": [
+        "/opt/ros/foxy/setup.sh",
+        "install/setup.sh"
+    ],
+    "colcon.colconCwd": "${workspaceFolder}/ros2/",
+    "colcon.refreshOnTasksOpened": true,
+    "colcon.refreshOnConfigurationChanged": true,
+    "colcon.colconExe": "/usr/bin/colcon"
 }
