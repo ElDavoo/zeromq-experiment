@@ -1,3 +1,3 @@
 add_subdirectory(alfredPennyworth)
-add_subdirectory(alfredPennyworth_highPayload)
+add_subdirectory(alfredPennyworth_deprecated)
 add_subdirectory(majordome-unstable)
