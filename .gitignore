@@ -1,7 +1,1 @@
-*
-!*/
-!*.*
-!Makefile
-*.a
-*.o
-.vscode/*
+build

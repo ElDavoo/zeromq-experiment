@@ -1,0 +1,2 @@
+add_subdirectory(majordomo)
+add_subdirectory(pub_sub)
