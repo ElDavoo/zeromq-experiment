@@ -1,8 +1,8 @@
-cmake_minimum_required(VERSION 3.20.0)
+cmake_minimum_required(VERSION 3.16.0)
 
 project(zeromq-experiment VERSION 0.1.0 LANGUAGES C)
 
-set(CMAKE_C_STANDARD 23)
+set(CMAKE_C_STANDARD 11)
 
 # Set build flags here
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra")
