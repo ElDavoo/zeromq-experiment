@@ -33,12 +33,12 @@ public:
   : Node("minimal_subscriber"){
     count_ = 0;
 
-    qos.keep_last(10);
-    qos.reliability(RMW_QOS_POLICY_RELIABILITY_BEST_EFFORT);
-    qos.history(RMW_QOS_POLICY_HISTORY_KEEP_LAST);
+    //qos.keep_last(10);
+    //qos.reliability(RMW_QOS_POLICY_RELIABILITY_BEST_EFFORT);
+    //qos.history(RMW_QOS_POLICY_HISTORY_KEEP_LAST);
 
     subscription_ = this->create_subscription<std_msgs::msg::String>(
-      "fronted", qos, std::bind(&MinimalSubscriber::topic_callback, this, _1));
+      "frontend", 10, std::bind(&MinimalSubscriber::topic_callback, this, _1));
 
     publisher_ = this->create_publisher<std_msgs::msg::String>("backend", 10);
   }

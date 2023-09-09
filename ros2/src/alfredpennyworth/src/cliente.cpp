@@ -14,6 +14,7 @@
 
 #include <chrono>
 #include <memory>
+#include <sstream>
 
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
@@ -49,7 +50,7 @@ public:
     publisher_ = this->create_publisher<std_msgs::msg::String>("frontend", 10);
     publisher_time = this->create_publisher<plotter_time::msg::Plottime>("time", 10);
 
-    timer_ = this->create_wall_timer(100ms, std::bind(&MinimalPublisher::timer_callback, this));
+    timer_ = this->create_wall_timer(1000ms, std::bind(&MinimalPublisher::timer_callback, this));
 
     subscription_ = this->create_subscription<std_msgs::msg::String>(
       "debrokered", 10, std::bind(&MinimalPublisher::topic_callback, this, _1));
@@ -60,18 +61,21 @@ private:
 
     auto message = std_msgs::msg::String();
     count_ = count_ + 1000;
-    message.data = /*"Ping " + */std::to_string(count_);
-    RCLCPP_INFO(this->get_logger(), "Publishing: '%s'", message.data.c_str());
-    for(size_t i = 0;i<count_;i++){
-      message.data = message.data + (char) (rand() % (0x7e - 0x20) + 0x20);
+    //message.data = /*"Ping " + */std::to_string(count_);
+    RCLCPP_INFO(this->get_logger(), "Publishing: '%lld'", count_);
+    std::stringstream ss;
+    for (size_t i = 0; i < count_; i++) {
+      char random_char = static_cast<char>(rand() % (0x7E - 0x20) + 0x20);
+      ss << random_char;
     }
-    
+    message.data = ss.str();
     publisher_->publish(message);
 
     //timer stuff
     clock_gettime(CLOCK_MONOTONIC, &timespec_start);
+    publisher_->publish(message);
     RCLCPP_INFO(this->get_logger(), "Count: %d", count_);
-    RCLCPP_INFO(this->get_logger(), "At launch, time is: %lld", timespec_end.tv_nsec);
+    RCLCPP_INFO(this->get_logger(), "At launch, time is: %lld", timespec_start.tv_nsec);
   }
 
   //funzione richiamata da subscriber
@@ -87,11 +91,14 @@ private:
     auto message_time = plotter_time::msg::Plottime();
     message_time.time = (timespec_end.tv_nsec - timespec_start.tv_nsec)/1000; //converte il tempo da nanosecondi in secondi
     message_time.dim = count_;
-    if (timespec_end.tv_nsec - timespec_start.tv_nsec >= 0) 
-      publisher_time->publish(message_time);
-    
+    if (timespec_end.tv_nsec - timespec_start.tv_nsec >= 0) {
+      message_time.time = (timespec_end.tv_nsec - timespec_start.tv_nsec)/1000;
+    }
+    else{
+      message_time.time = 1000;
+    }
+    publisher_time->publish(message_time);
   }
-
 };
 
 int main(int argc, char * argv[]){
