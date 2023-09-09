@@ -1,2 +1,2 @@
-float32 dim
-int64 time
+int64 dim
+float64 time
