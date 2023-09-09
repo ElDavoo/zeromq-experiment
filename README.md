@@ -6,26 +6,41 @@ as the message library for software components of autonomous vehicles, like the
 This is a university project made for the subject "Real-Time Embedded Systems", for Università degli studi di Modena e Reggio Emilia. , year 2022-2023.
 
 ## Introduzione
-TODO: Spiegare in maniera breve cos'è e come funziona ROS2  
-TODO: Spiegare in maniera breve cos'è e come funziona ZeroMQ  
-TODO: Spiegare l'obiettivo del paper
+### ROS2
+ROS2 è un framework open source basato su un modello di pubblicazione/sottoscrizione, in cui i messaggi vengono inviati da un nodo a un altro. Questo consente ai nodi di comunicare tra loro in modo semplice e tramite diversi livelli di affidabilità.
+ROS2 non implementa un suo middleware (ovvero il software che si occupa dello scambio di messaggi fra i nodi), ma utilizza eProsima Fast DDS.
+Fast DDS, a sua volta, utilizza UDP.
+ROS2, quindi, è un framework completo con un suo sistema di compilazione, gestione pacchetti, scoperta dei nodi, riproduzione dei dati, etc.  
+### ZeroMQ
+ZeroMQ è una libreria di messaggistica asincrona ad alte prestazioni, leggera e semplice che consente agli sviluppatori di creare applicazioni distribuite e concorrenti. È una libreria leggera e semplice da usare, che offre una vasta gamma di funzionalità per soddisfare una varietà di esigenze.  
+Al contrario di ROS2, quindi, non vengono offerti servizi ulteriori.
+ZeroMQ utilizza TCP come ulteriore controllo di errori e perdita dati.  
+
+---
+
+ZeroMQ, quindi, si presenta come una soluzione più difficile da utilizzare ma più leggera.
+### Obiettivo del progetto
+L'obiettivo del progetto è di confrontare la latenza delle due soluzioni software e stabilire la soluzione di minore latenza.
 
 ## Background
-TODO: Creare una feature table in cui si confrontano i servizi offerti da ROS2 e quelli offerti da ZeroMQ  
+I pattern di comunicazioni sono indipendenti dalla soluzione scelta.  
+Tuttavia, in ROS2 si preferisce utilizzare il pattern PUB-SUB.
+### Pattern Pubblicazione - Sottoscrizione (PUB-SUB)
 
-||||
-|---|---|---|
-|Feature|ROS2|ZeroMQ|
-|Node discovery|☑️|❌|
+### Pattern del maggiordomo
+![Pattern del maggiordomo](docs/majordomo.png)
+Nel pattern del maggiordomo, i nodi client si interfacciano con un nodo intermediario (broker), che inoltrerà il messaggio al 
+nodo responsabile dell'elaborazione dei dati (server). Ciò rende possibile l'utilizzo di intestazioni diversi, la presenza dinamica di più
+server e client e garantisce una certa affidabilità nello scambio di messaggi.
 
 TODO: Capire e spiegare con degli schemi come funziona la comunicazione intraprocesso, interprocesso e internodo su ROS2
 TODO: Spiegare con degli schemi come funziona la comunicazione intraprocesso, interprocesso e internodo su ZeroMQ
 ![ROS2 Bozza di schema](https://github.com/ElDavoo/zeromq-experiment/assets/4050967/5eca201f-98d8-4ffa-913b-0ac451c3761a)
 # Valutazione
 ## Ambiente di valutazione
-TODO: Descrivere il setup dell'ambiente di sperimentazione:
-- Le specifiche del PC
-- Le specifiche della jetson
+Per lo sviluppo e i test sono state usate due NVIDIA Jetson Nano Developer Kit, 
+collegate tramite Ethernet ai portatili degli studenti.
+L'ambiente di sviluppo utilizzato è stato VS Code in modalità remota (SSH).
 ```sh
 root@nano:~# lsb_release -a
 No LSB modules are available.
@@ -57,13 +72,37 @@ Libraries:
  - Vulkan: 1.2.141
  - OpenCV: 4.6.0 - with CUDA: YES
 ```
-- Tutte le configurazioni del SO
-- Ad esempio, io l'ubuntu 20 della jetson l'ho aggiornato
-- La versione del compilatore
+- Toolchain utilizzata per i test: GCC 9.4.0 aarch64-linux-gnu
+- Versione di ROS2 utilizzata: Foxy Fitzroy
+- Versione di ZeroMQ utilizzata: 4.3.2
+
+E' stato usato
+[PlotJuggler](https://github.com/facontidavide/PlotJuggler)
+per visualizzare in tempo reale la telemtria dei nodi.
+
 ## Metodologia di valutazione
-TODO: Spiegare in breve come è fatto il codice di benchmark.
-- Seguire [real-time-tricks](docs/real-time-tricks.md)
-- Riportare le flag del compilatore
+- Il sistema operativo è stato preparato con [queste](docs/real-time-tricks.md) istruzioni.
+- Le flag del compilatore sono quelle predefinite.
+
+Sono stati implementati i seguenti pattern:
+ - [Il pattern del maggiordomo](https://rfc.zeromq.org/spec/7/)
+ - [Pattern pub-sub](https://rfc.zeromq.org/spec/29/).  
+
+In entrambi i casi, la parte inviante:
+1. Invia un messaggio ogni 10ms, aumentandone ad ogni iterazione la dimensione di 1000 byte. (La funzione di invio non è sincrona, il che significa che il messaggio viene inviato mentre il programma continua ad eseguire)
+2. Campiona il tempo attuale.
+3. Attende la risposta dalla parte ricevente.
+4. Campiona il tempo attuale.
+5. Calcola la differenza tra i due tempi campionati e manda al canale di telemetria.
+
+Questa metodologia ci consente di calcolare il Round Trip Time (RTT) e di avere un'idea quindi della latenza, sia media che massima, del sistema, all'aumentare della dimensione del messaggio.
+
+Questi pattern sono stati sviluppati sia per ROS2 che per ZeroMQ, in modo da poter confrontare le due soluzioni.
+
+Ogni test è stato eseguito su entrambe le schede, con PlotJuggler a registrare i dati e a visualizzarli in tempo reale.  
+
+
+
 ## Risultati delle valutazioni
 [issue](https://github.com/ElDavoo/zeromq-experiment/issues/1)
 Qua grafici, dati, etc etc

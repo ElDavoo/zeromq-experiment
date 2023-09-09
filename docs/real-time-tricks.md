@@ -1,32 +1,32 @@
 # RT Tricks
-This series of tricks do NOT have the goal of making the testing environment real-time,
-but only to **reduce** the background noise in order to **improve** the test accuracy.  
-# Disable the irqbalance daemon
-The irqbalance daemon balances the IRQ between all CPUs
+Notare che questi parametri servono a ridurre il rumore di fondo e ad 
+aumentare quindi la precisione dei benchmark, ma non a rendere il sistema real-time. 
+# Disattivare irqbalance
+irqbalance è un demone che bilancia i carichi di lavoro tra i core della CPU.
 ```sh
 sudo systemctl disable --now irqbalance
 ```
-# Disable extra stuff
-## Disable the GUI
+# Disattivare cose non necessarie
+## Disattivazione interfaccia grafica
 ```sh
 sudo jetson-config
 ```
-- Select "desktop"
-- Select "B1 - Console"
-## Disable extra stuff
-In my Jetson, teamviewer and docker were enabled, so:
+- Selezione "desktop"
+- Selezione "B1 - Console"
+## Altri programmi
+Nella nostra Jetson, questi programmi erano attivi e sono stati disattivati:
 ```sh
 sudo systemctl disable --now teamviewerd docker
 ```
-# Kernel parameters
+# Parametri del kernel
 ```
 sudo nano /boot/extlinux/extlinux.conf
 
-write: isolcpus=1-3 nohz_full=1-3 mitigations=off
-in kernel parameters
+mettere: isolcpus=1-3 nohz_full=1-3 mitigations=off
+nei parametri del kernel
 reboot
 ```
-# To execute at every boot
+# Eseguire ad ogni avvio
 ```sh
 sudo -i 
 sysctl vm.stat_interval=120
@@ -39,4 +39,3 @@ sysctl -w net.core.wmem_max="67108864"
 sysctl -w net.core.rmem_default="67108864"
 sysctl -w net.core.wmem_default="67108864"
 ```
-d
