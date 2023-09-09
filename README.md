@@ -1,9 +1,9 @@
 # zeromq-experiment
-We are trying to understand the feasibility of using 
+Questo progetto è un esperimento per valutare l'utilizzo di
 [ZeroMQ](https://zeromq.org/) 
-as the message library for software components of autonomous vehicles, like the
-[F1/10](https://f1tenth.org/) car.  
-This is a university project made for the subject "Real-Time Embedded Systems", for Università degli studi di Modena e Reggio Emilia. , year 2022-2023.
+come libreria di messaggistica per software di veicoli autonomi, come il veicolo
+[F1/10](https://f1tenth.org/).  
+Questo è un progetto universitario per il corso "Real-Time Embedded Systems", per l'Università degli studi di Modena e Reggio Emilia, anno 2022-2023.
 
 ## Introduzione
 ### ROS2
@@ -28,14 +28,17 @@ Tuttavia, in ROS2 si preferisce utilizzare il pattern PUB-SUB.
 ### Pattern Pubblicazione - Sottoscrizione (PUB-SUB)
 
 ### Pattern del maggiordomo
-![Pattern del maggiordomo](docs/majordomo.png)
+![Pattern del maggiordomo](docs/majordomo.png)  
+
 Nel pattern del maggiordomo, i nodi client si interfacciano con un nodo intermediario (broker), che inoltrerà il messaggio al 
 nodo responsabile dell'elaborazione dei dati (server). Ciò rende possibile l'utilizzo di intestazioni diversi, la presenza dinamica di più
 server e client e garantisce una certa affidabilità nello scambio di messaggi.
 
 TODO: Capire e spiegare con degli schemi come funziona la comunicazione intraprocesso, interprocesso e internodo su ROS2
-TODO: Spiegare con degli schemi come funziona la comunicazione intraprocesso, interprocesso e internodo su ZeroMQ
+TODO: Spiegare con degli schemi come funziona la comunicazione intraprocesso, interprocesso e internodo su ZeroMQ  
+
 ![ROS2 Bozza di schema](https://github.com/ElDavoo/zeromq-experiment/assets/4050967/5eca201f-98d8-4ffa-913b-0ac451c3761a)
+
 # Valutazione
 ## Ambiente di valutazione
 Per lo sviluppo e i test sono state usate due NVIDIA Jetson Nano Developer Kit, 
@@ -72,13 +75,13 @@ Libraries:
  - Vulkan: 1.2.141
  - OpenCV: 4.6.0 - with CUDA: YES
 ```
-- Toolchain utilizzata per i test: GCC 9.4.0 aarch64-linux-gnu
-- Versione di ROS2 utilizzata: Foxy Fitzroy
-- Versione di ZeroMQ utilizzata: 4.3.2
+- Toolchain utilizzata per i test: **GCC 9.4.0 aarch64-linux-gnu**
+- Versione di ROS2 utilizzata: **Foxy Fitzroy**
+- Versione di ZeroMQ utilizzata: **4.3.2**
 
 E' stato usato
-[PlotJuggler](https://github.com/facontidavide/PlotJuggler)
-per visualizzare in tempo reale la telemtria dei nodi.
+[PlotJuggler](https://github.com/facontidavide/PlotJuggler) 3.7.1 
+per visualizzare in tempo reale la telemetria dei nodi.
 
 ## Metodologia di valutazione
 - Il sistema operativo è stato preparato con [queste](docs/real-time-tricks.md) istruzioni.
@@ -89,13 +92,13 @@ Sono stati implementati i seguenti pattern:
  - [Pattern pub-sub](https://rfc.zeromq.org/spec/29/).  
 
 In entrambi i casi, la parte inviante:
-1. Invia un messaggio ogni 10ms, aumentandone ad ogni iterazione la dimensione di 1000 byte. (La funzione di invio non è sincrona, il che significa che il messaggio viene inviato mentre il programma continua ad eseguire)
-2. Campiona il tempo attuale.
-3. Attende la risposta dalla parte ricevente.
-4. Campiona il tempo attuale.
-5. Calcola la differenza tra i due tempi campionati e manda al canale di telemetria.
+1. **Invia** un messaggio ogni 10ms, aumentandone ad ogni iterazione la dimensione di **1000 byte**. (La funzione di invio non è sincrona, il che significa che il messaggio viene inviato mentre il programma continua ad eseguire). Il messaggio ha contenuto casuale, per evitare influenze da parte di compressori e cache.
+2. **Campiona** il tempo attuale.
+3. **Attende la risposta** dalla parte ricevente.
+4. **Campiona** il tempo attuale.
+5. Calcola la **differenza** tra i due tempi campionati e manda al canale di **telemetria**.
 
-Questa metodologia ci consente di calcolare il Round Trip Time (RTT) e di avere un'idea quindi della latenza, sia media che massima, del sistema, all'aumentare della dimensione del messaggio.
+Questa metodologia ci consente di calcolare il **Round Trip Time** (RTT) e di avere un'idea quindi della latenza, sia media che massima, del sistema, all'aumentare della dimensione del messaggio.
 
 Questi pattern sono stati sviluppati sia per ROS2 che per ZeroMQ, in modo da poter confrontare le due soluzioni.
 
@@ -109,3 +112,8 @@ Qua grafici, dati, etc etc
 
 # Conclusioni
 ZeroMQ va bene per messaggi piccoli ed è più veloce, o forse no? 
+
+# Riproduzione del progetto
+Seguire la
+[guida apposita](docs/building.md)
+per riprodurre il progetto.
