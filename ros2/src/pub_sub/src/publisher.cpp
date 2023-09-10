@@ -55,7 +55,7 @@ public:
   }
 
 private:
-  void sub_timespec(struct timespec t1, struct timespec t2, struct timespec *td)
+  void sub_timespec(const struct timespec t1, const struct timespec t2, struct timespec *td)
   {
     td->tv_nsec = t2.tv_nsec - t1.tv_nsec;
     td->tv_sec  = t2.tv_sec - t1.tv_sec;
@@ -91,7 +91,7 @@ private:
   }
 
   //funzione richiamata da subscriber
-  void topic_callback(const std_msgs::msg::String::SharedPtr msg) {
+  void topic_callback(const std_msgs::msg::String::SharedPtr) {
     
     clock_gettime(CLOCK_MONOTONIC, &timespec_end);
     //invio il messaggio per plottare i dati
