@@ -24,12 +24,16 @@ int main (void){
         char *address = s_recv (subscriber);
         //  Read message contents
         char *contents = s_recv (subscriber);
+        //printf ("[%s] %s\n", address, contents);
+        //printf ("[%s] \n", address);
+        //free (address);
+        //free (contents);
+        s_sendmore (publisher_pong, "Pong");
+        s_send (publisher_pong, " pong");
         printf ("[%s] %s\n", address, contents);
         //printf ("[%s] \n", address);
         free (address);
         free (contents);
-        s_sendmore (publisher_pong, "Pong");
-        s_send (publisher_pong, " pong");
     }
     //  We never get here, but clean up anyhow
     zmq_close (subscriber);

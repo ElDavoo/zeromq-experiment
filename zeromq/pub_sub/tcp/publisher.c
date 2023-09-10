@@ -26,6 +26,18 @@ void telemetry(void *publisher_tel, int count, double rtt){
 
 // a timespec struct
 struct timespec timespec_start, timespec_end;
+void sub_timespec(struct timespec t1, struct timespec t2, struct timespec *td){
+    td->tv_nsec = t2.tv_nsec - t1.tv_nsec;
+    td->tv_sec  = t2.tv_sec - t1.tv_sec;
+    if (td->tv_sec > 0 && td->tv_nsec < 0){
+        td->tv_nsec += 1000000000; //NS_PER_SECOND
+        td->tv_sec--;
+    }
+    else if (td->tv_sec < 0 && td->tv_nsec > 0){
+        td->tv_nsec -= 1000000000; //NS_PER_SECOND
+        td->tv_sec++;
+    }
+}
 
 int main (int argc, char **argv){
     int count = 0;
@@ -81,10 +93,14 @@ int main (int argc, char **argv){
         //  Read message contents
         contents = s_recv (subscriber_pong);
         clock_gettime(CLOCK_MONOTONIC, &timespec_end);
-        printf ("[%s] %s. RTT: %ld us\n", address, contents, (timespec_end.tv_nsec - timespec_start.tv_nsec)/1000);
+        struct timespec timespec_diff;
+        sub_timespec(timespec_start, timespec_end, &timespec_diff);
+        telemetry(publisher_tel, count, timespec_diff.tv_sec + (timespec_diff.tv_nsec / 1000000000.0f));
+        /*printf ("[%s] %s. RTT: %ld us\n", address, contents, (timespec_end.tv_nsec - timespec_start.tv_nsec)/1000);
         if (timespec_end.tv_nsec - timespec_start.tv_nsec >= 0) 
             telemetry(publisher_tel, count, (timespec_end.tv_nsec - timespec_start.tv_nsec)/1000);
-        free (address);
+        */
+       free (address);
         free (contents);
         free (message);
         s_sleep (10);
