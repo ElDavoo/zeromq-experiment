@@ -30,12 +30,8 @@ class MinimalSubscriber : public rclcpp::Node{
 
 public:
   MinimalSubscriber()
-  : Node("minimal_subscriber"){
+  : Node("minimal_subscriber",rclcpp::NodeOptions()){
     count_ = 0;
-
-    //qos.keep_last(10);
-    //qos.reliability(RMW_QOS_POLICY_RELIABILITY_BEST_EFFORT);
-    //qos.history(RMW_QOS_POLICY_HISTORY_KEEP_LAST);
 
     subscription_ = this->create_subscription<std_msgs::msg::String>(
       "frontend", 10, std::bind(&MinimalSubscriber::topic_callback, this, _1));
@@ -47,12 +43,15 @@ private:
   //funzione richiamata da subscriber
   void topic_callback(const std_msgs::msg::String::SharedPtr msg){
 
+    auto message = std_msgs::msg::String();
+    message.data = "Pong";
+    publisher_->publish(message);
     RCLCPP_INFO(this->get_logger(), "I heard: '%s'", msg->data.c_str());
 
-    auto message = std_msgs::msg::String();
-    message.data = "Pong of " + msg->data;
-    RCLCPP_INFO(this->get_logger(), "Publishing: '%s'", message.data.c_str());
-    publisher_->publish(message);
+    //auto message = std_msgs::msg::String();
+    //message.data = "Pong of " + msg->data;
+    //RCLCPP_INFO(this->get_logger(), "Publishing: '%s'", message.data.c_str());
+    //publisher_->publish(message);
   }
   
 };
