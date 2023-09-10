@@ -12,26 +12,10 @@ Frames 3+: Request body (opaque binary)
 */
 #include "zhelpers.h"
 #include "cJSON.h"
-
+#include "utils.h"
 #define REQUESTS 100
 
 struct timespec timespec_start, timespec_end;
-
-void telemetry(void *publisher_tel, int count, double rtt){
-    //todo
-    // Creazione dell'oggetto JSON
-    cJSON *root = cJSON_CreateObject();
-
-    // Inserimento dei dati nella coppia
-    cJSON_AddNumberToObject(root, "count", count);
-    cJSON_AddNumberToObject(root, "rtt", rtt);
-
-    s_sendmore (publisher_tel, "TELEMETRY"); //envelope
-    s_send (publisher_tel, cJSON_Print(root)); //content
-    
-    // Deallocazione della memoria
-    cJSON_Delete(root);
-}
 
 int main (void) 
 {
