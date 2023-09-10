@@ -29,17 +29,17 @@ public:
 private:
     void handle_frontend_message(const std_msgs::msg::String::SharedPtr msg) {
         // Process the message from the frontend and forward it to the backend
-        std_msgs::msg::String response_msg;
-        response_msg.data = msg->data;
-        publisher_->publish(response_msg);
+        //std_msgs::msg::String response_msg;
+        //response_msg.data = msg->data;
+        publisher_->publish(*msg);
         RCLCPP_INFO(this->get_logger(), "Msg brokered");
     }
 
     void handle_backend_message(const std_msgs::msg::String::SharedPtr msg) {
         // Process the message from the backend and forward it to the frontend
-        std_msgs::msg::String response_msg;
-        response_msg.data = msg->data;
-        publisher_debrok->publish(response_msg);
+        //std_msgs::msg::String response_msg;
+        //response_msg.data = msg->data;
+        publisher_debrok->publish(*msg);
         RCLCPP_INFO(this->get_logger(), "Msg debrokered");
     }
 

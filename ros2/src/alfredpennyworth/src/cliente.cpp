@@ -57,6 +57,22 @@ public:
   }
 
 private:
+  void sub_timespec(struct timespec t1, struct timespec t2, struct timespec *td)
+  {
+    td->tv_nsec = t2.tv_nsec - t1.tv_nsec;
+    td->tv_sec  = t2.tv_sec - t1.tv_sec;
+    if (td->tv_sec > 0 && td->tv_nsec < 0)
+    {
+        td->tv_nsec += 1000000000; //NS_PER_SECOND
+        td->tv_sec--;
+    }
+    else if (td->tv_sec < 0 && td->tv_nsec > 0)
+    {
+        td->tv_nsec -= 1000000000; //NS_PER_SECOND
+        td->tv_sec++;
+    }
+  }
+  
   void timer_callback(){ //funzione richiamata da publisher
 
     auto message = std_msgs::msg::String();
@@ -69,7 +85,6 @@ private:
       ss << random_char;
     }
     message.data = ss.str();
-    publisher_->publish(message);
 
     //timer stuff
     clock_gettime(CLOCK_MONOTONIC, &timespec_start);
@@ -82,22 +97,18 @@ private:
   void topic_callback(const std_msgs::msg::String::SharedPtr msg) {
     
     clock_gettime(CLOCK_MONOTONIC, &timespec_end);
-    RCLCPP_INFO(this->get_logger(), "On reception, time is: %lld", timespec_end.tv_nsec);
-    RCLCPP_INFO(this->get_logger(), "TIME PASSED: %lld", (timespec_end.tv_nsec - timespec_start.tv_nsec)/1000); //converto i ns in sec
-    
     //invio il messaggio per plottare i dati
     //ho creato un format di messaggio custom
     //ogni volta invia una coppia di dati: dimensione del payload e round-trip time del pacchetto
     auto message_time = plotter_time::msg::Plottime();
-    message_time.time = (timespec_end.tv_nsec - timespec_start.tv_nsec)/1000; //converte il tempo da nanosecondi in secondi
     message_time.dim = count_;
-    if (timespec_end.tv_nsec - timespec_start.tv_nsec >= 0) {
-      message_time.time = (timespec_end.tv_nsec - timespec_start.tv_nsec)/1000;
-    }
-    else{
-      message_time.time = 1000;
-    }
+    struct timespec timespec_diff;
+    sub_timespec(timespec_start, timespec_end, &timespec_diff);
+    message_time.time = timespec_diff.tv_sec + (timespec_diff.tv_nsec / 1000000000.0f);
     publisher_time->publish(message_time);
+
+    RCLCPP_INFO(this->get_logger(), "On reception, time is: %lld", timespec_end.tv_nsec);
+    //RCLCPP_INFO(this->get_logger(), "TIME PASSED: %f", timespec_diff.tv_sec + (timespec_diff.tv_nsec / 1000000000.0f)); //converto i ns in sec
   }
 };
 

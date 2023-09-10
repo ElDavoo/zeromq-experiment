@@ -6,15 +6,14 @@ public:
     MyNode() : Node("my_node") {
         publisher_ = this->create_publisher<std_msgs::msg::String>("backend", 10);
         subscriber_ = this->create_subscription<std_msgs::msg::String>(
-            "brokered",
-            10,
-            [this](const std_msgs::msg::String::SharedPtr msg) {
-                RCLCPP_INFO(this->get_logger(), "Received message: %s", msg->data.c_str());
+            "brokered",10,[this](const std_msgs::msg::String::SharedPtr msg) {
+                //RCLCPP_INFO(this->get_logger(), "Received message: %s", msg->data.c_str());
                 // Do some stuff
                 // Send a reply back to the client
                 std_msgs::msg::String reply_msg;
                 reply_msg.data = "reply";
                 publisher_->publish(reply_msg);
+                RCLCPP_INFO(this->get_logger(), "Received message: %s", msg->data.c_str());
             }
         );
     }
