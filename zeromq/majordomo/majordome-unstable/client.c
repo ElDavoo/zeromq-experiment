@@ -40,8 +40,6 @@ int main (void){
         memcpy (zmq_msg_data (&part), "prova1", 6);
         zmq_msg_send (&part, request, 0);
 
-        clock_t start_time = clock();
-
         int more;
         size_t more_size = sizeof (more);
         do {
