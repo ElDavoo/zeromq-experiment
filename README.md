@@ -84,6 +84,9 @@ E' stato usato
 per visualizzare in tempo reale la telemetria dei nodi.
 
 ## Metodologia di valutazione
+
+Consultare la [guida apposita](docs/building.md) per visualizzare i comandi precisi.
+
 - Il sistema operativo è stato preparato con [queste](docs/real-time-tricks.md) istruzioni.
 - Le flag del compilatore sono quelle predefinite.
 
@@ -101,6 +104,9 @@ In entrambi i casi, la parte inviante:
 Questa metodologia ci consente di calcolare il **Round Trip Time** (RTT) e di avere un'idea quindi della latenza, sia media che massima, del sistema, all'aumentare della dimensione del messaggio.
 
 Questi pattern sono stati sviluppati sia per ROS2 che per ZeroMQ, in modo da poter confrontare le due soluzioni.
+
+Per ZeroMQ/pub_sub sono stati sviluppati due test, uno con IPC e uno con TCP, per valutare le differenze di prestazioni tra i due protocolli.  
+Con ROS2, questo non è stato necessario, in quanto viene scelto automaticamente se usare la comunicazione interprocesso o internodo.  
 
 Ogni test è stato eseguito su entrambe le schede, con PlotJuggler a registrare i dati e a visualizzarli in tempo reale.  
 

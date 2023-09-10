@@ -38,4 +38,6 @@ sysctl -w net.core.rmem_max="67108864"
 sysctl -w net.core.wmem_max="67108864"
 sysctl -w net.core.rmem_default="67108864"
 sysctl -w net.core.wmem_default="67108864"
+sysctl -w net.inet.udp.recvspace=209715
+sysctl -w net.inet.udp.maxdgram=65500
 ```
