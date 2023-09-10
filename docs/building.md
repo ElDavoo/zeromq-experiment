@@ -32,7 +32,9 @@ L'esecuzione richiede un terminale per ogni nodo (quindi da 2 a 3).
 Siccome abbiamo precedentemente impostato il parametro "isolcpus=1-3",
 abbiamo a nostra disposizione i core 1, 2 e 3.
 #### Impostazione di PlotJuggler
-TODO
+Per ZeroMQ:  
+![foto](plotj1.png)
+
 
 
 ### Esecuzione test ZeroMQ
