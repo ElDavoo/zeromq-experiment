@@ -26,8 +26,6 @@ class MinimalSubscriber : public rclcpp::Node{
   rclcpp::TimerBase::SharedPtr timer_;
   size_t count_;
 
-  rclcpp::QoS qos = rclcpp::QoS(rclcpp::QoSInitialization::from_rmw(rmw_qos_profile_default));
-
 public:
   MinimalSubscriber()
   : Node("minimal_subscriber",rclcpp::NodeOptions()){
