@@ -31,6 +31,32 @@ struct timespec timespec_start, timespec_end; //strutture timespec per campionar
 
 using namespace std::chrono_literals;
 
+static const rmw_qos_profile_t unreliable_qos_profile =
+{
+    RMW_QOS_POLICY_HISTORY_KEEP_LAST,
+    0, //depth
+    RMW_QOS_POLICY_RELIABILITY_BEST_EFFORT,
+    RMW_QOS_POLICY_DURABILITY_VOLATILE,
+    RMW_QOS_DEADLINE_DEFAULT,
+    RMW_QOS_LIFESPAN_DEFAULT,
+    RMW_QOS_POLICY_LIVELINESS_SYSTEM_DEFAULT,
+    RMW_QOS_LIVELINESS_LEASE_DURATION_DEFAULT,
+    false // useless
+};
+
+static const rmw_qos_profile_t reliable_qos_profile = 
+{
+    RMW_QOS_POLICY_HISTORY_KEEP_LAST,
+    10, //depth
+    RMW_QOS_POLICY_RELIABILITY_RELIABLE,
+    RMW_QOS_POLICY_DURABILITY_VOLATILE,
+    RMW_QOS_DEADLINE_DEFAULT,
+    RMW_QOS_LIFESPAN_DEFAULT,
+    RMW_QOS_POLICY_LIVELINESS_SYSTEM_DEFAULT,
+    RMW_QOS_LIVELINESS_LEASE_DURATION_DEFAULT,
+    false // useless
+};
+
 class MinimalPublisher : public rclcpp::Node{
     rclcpp::TimerBase::SharedPtr timer_; //timer per il create_wall_timer
     rclcpp::Publisher<plotter_time::msg::Data>::SharedPtr publisher_; //publisher per Ping-pong
@@ -38,7 +64,7 @@ class MinimalPublisher : public rclcpp::Node{
     size_t count_; //conta la dimensione del payload da inviare 
     rclcpp::Subscription<plotter_time::msg::Data>::SharedPtr subscription_;
 
-    rclcpp::QoS qos = rclcpp::QoS(rclcpp::QoSInitialization::from_rmw(rmw_qos_profile_default));
+    rclcpp::QoS qos = rclcpp::QoS(rclcpp::QoSInitialization::from_rmw(unreliable_qos_profile));
 
 
 public:
@@ -115,4 +141,4 @@ int main(int argc, char * argv[]){
   rclcpp::spin(std::make_shared<MinimalPublisher>());
   rclcpp::shutdown();
   return 0;
-}
+} 
