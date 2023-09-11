@@ -131,7 +131,7 @@ Questa metodologia ci consente di calcolare il **Round Trip Time** (RTT) e di av
 Questi pattern sono stati sviluppati sia per ROS2 che per ZeroMQ, in modo da poter confrontare le due soluzioni.
 
 Per ZeroMQ/pub_sub sono stati sviluppati due test, uno con IPC e uno con TCP, per valutare le differenze di prestazioni tra i due protocolli.  
-Con ROS2, questo non è stato necessario, in quanto viene scelto automaticamente se usare la comunicazione interprocesso o internodo.  
+Con ROS2, questo non è stato necessario, in quanto come esplicitato prima esso fa uso del FastDDS che gestisce in maniera trasparente la comunicazione.  
 
 Ogni test è stato eseguito su entrambe le schede, con PlotJuggler a registrare i dati e a visualizzarli in tempo reale.  
 
