@@ -91,7 +91,7 @@ private:
   }
 
   //funzione richiamata da subscriber
-  void topic_callback(const std_msgs::msg::String::SharedPtr msg) {
+  void topic_callback(const std_msgs::msg::String::SharedPtr) {
     
     clock_gettime(CLOCK_MONOTONIC, &timespec_end);
     //invio il messaggio per plottare i dati

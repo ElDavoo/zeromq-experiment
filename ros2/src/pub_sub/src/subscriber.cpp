@@ -20,13 +20,15 @@
 
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
+#include "plotter_time/msg/data.hpp"
+
 using std::placeholders::_1;
 
 using namespace std::chrono_literals;
 
 class MinimalSubscriber : public rclcpp::Node{
-  rclcpp::Subscription<std_msgs::msg::String>::SharedPtr subscription_;
-  rclcpp::Publisher<std_msgs::msg::String>::SharedPtr publisher_;
+  rclcpp::Subscription<plotter_time::msg::Data>::SharedPtr subscription_;
+  rclcpp::Publisher<plotter_time::msg::Data>::SharedPtr publisher_;
   rclcpp::TimerBase::SharedPtr timer_;
   size_t count_;
 
@@ -35,19 +37,19 @@ public:
   : Node("minimal_subscriber",rclcpp::NodeOptions()){
     count_ = 0;
 
-    subscription_ = this->create_subscription<std_msgs::msg::String>("frontend", 10, 
+    subscription_ = this->create_subscription<plotter_time::msg::Data>("frontend", 10, 
       std::bind(&MinimalSubscriber::topic_callback, this, _1));
-    publisher_ = this->create_publisher<std_msgs::msg::String>("backend", 10);
+    publisher_ = this->create_publisher<plotter_time::msg::Data>("backend", 10);
   }
 
 private:
   //funzione richiamata da subscriber
-  void topic_callback(const std_msgs::msg::String::SharedPtr msg){
+  void topic_callback(const plotter_time::msg::Data::SharedPtr msg){
 
-    auto message = std_msgs::msg::String();
-    message.data = "Pong";
+    auto message = plotter_time::msg::Data();
+    message.data.push_back(123);
     publisher_->publish(message);
-    RCLCPP_INFO(this->get_logger(), "I heard: '%s'", msg->data.c_str());
+    RCLCPP_INFO(this->get_logger(), "I heard: '%d'", msg->data[0]);
   }
   
 };

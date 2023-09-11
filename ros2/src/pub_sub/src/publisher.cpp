@@ -26,16 +26,17 @@
 using std::placeholders::_1;
 
 #include "plotter_time/msg/plottime.hpp"
+#include "plotter_time/msg/data.hpp"
 struct timespec timespec_start, timespec_end; //strutture timespec per campionare l'istante di invio e ricezione
 
 using namespace std::chrono_literals;
 
 class MinimalPublisher : public rclcpp::Node{
     rclcpp::TimerBase::SharedPtr timer_; //timer per il create_wall_timer
-    rclcpp::Publisher<std_msgs::msg::String>::SharedPtr publisher_; //publisher per Ping-pong
+    rclcpp::Publisher<plotter_time::msg::Data>::SharedPtr publisher_; //publisher per Ping-pong
     rclcpp::Publisher<plotter_time::msg::Plottime>::SharedPtr publisher_time; //publisher per plot
     size_t count_; //conta la dimensione del payload da inviare 
-    rclcpp::Subscription<std_msgs::msg::String>::SharedPtr subscription_;
+    rclcpp::Subscription<plotter_time::msg::Data>::SharedPtr subscription_;
 
     rclcpp::QoS qos = rclcpp::QoS(rclcpp::QoSInitialization::from_rmw(rmw_qos_profile_default));
 
@@ -44,12 +45,12 @@ public:
   MinimalPublisher()
   : Node("minimal_publisher"), count_(0){
     
-    publisher_ = this->create_publisher<std_msgs::msg::String>("frontend", 10);
+    publisher_ = this->create_publisher<plotter_time::msg::Data>("frontend", 10);
     publisher_time = this->create_publisher<plotter_time::msg::Plottime>("time", 10);
 
     timer_ = this->create_wall_timer(1000ms, std::bind(&MinimalPublisher::timer_callback, this));
 
-    subscription_ = this->create_subscription<std_msgs::msg::String>("backend", 10, std::bind(&MinimalPublisher::topic_callback, this, _1));
+    subscription_ = this->create_subscription<plotter_time::msg::Data>("backend", 10, std::bind(&MinimalPublisher::topic_callback, this, _1));
   }
 
 private:
@@ -71,16 +72,16 @@ private:
   }
 
   void timer_callback(){ //funzione richiamata da publisher
-    auto message = std_msgs::msg::String();
+    auto message = plotter_time::msg::Data();
     count_ = count_ + 1000;
     
     RCLCPP_INFO(this->get_logger(), "Publishing: '%lld'", count_);
-    std::stringstream ss;
+    // std::stringstream ss;
     for (size_t i = 0; i < count_; i++) {
-      char random_char = static_cast<char>(rand() % (0x7E - 0x20) + 0x20); //aggiunge un carattere random al payload
-      ss << random_char;
+      uint8_t random_char =rand() % (0x7E - 0x20) + 0x20; //aggiunge un carattere random al payload
+      message.data.push_back(random_char);
     }
-    message.data = ss.str();
+    // message.data = ss.str();
 
     clock_gettime(CLOCK_MONOTONIC, &timespec_start);
     publisher_->publish(message);
@@ -89,7 +90,7 @@ private:
   }
 
   //funzione richiamata da subscriber
-  void topic_callback(const std_msgs::msg::String::SharedPtr) {
+  void topic_callback(const plotter_time::msg::Data::SharedPtr) {
     
     clock_gettime(CLOCK_MONOTONIC, &timespec_end);
 

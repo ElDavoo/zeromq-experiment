@@ -23,6 +23,7 @@ find_package(rosidl_default_generators REQUIRED)
 # find_package(<dependency> REQUIRED)
 rosidl_generate_interfaces(${PROJECT_NAME}
   "src/msg/Plottime.msg"
+  "src/msg/Data.msg"
  )
 
 if(BUILD_TESTING)
