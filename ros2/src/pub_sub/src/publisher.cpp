@@ -48,7 +48,7 @@ public:
     publisher_ = this->create_publisher<plotter_time::msg::Data>("frontend", 10);
     publisher_time = this->create_publisher<plotter_time::msg::Plottime>("time", 10);
 
-    timer_ = this->create_wall_timer(1000ms, std::bind(&MinimalPublisher::timer_callback, this));
+    timer_ = this->create_wall_timer(10ms, std::bind(&MinimalPublisher::timer_callback, this));
 
     subscription_ = this->create_subscription<plotter_time::msg::Data>("backend", 10, std::bind(&MinimalPublisher::topic_callback, this, _1));
   }
@@ -101,7 +101,7 @@ private:
     message_time.dim = count_;
     struct timespec timespec_diff;
     sub_timespec(timespec_start, timespec_end, &timespec_diff);
-    message_time.time = timespec_diff.tv_sec + (timespec_diff.tv_nsec / 1000000000.0f); //formattata come x,y secondi
+    message_time.time = (timespec_diff.tv_sec * 1000000000.0f) + timespec_diff.tv_nsec; //formattata come x,y secondi
     publisher_time->publish(message_time);
 
     RCLCPP_INFO(this->get_logger(), "On reception, time is: %lld", timespec_end.tv_nsec);
