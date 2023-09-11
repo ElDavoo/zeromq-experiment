@@ -1,4 +1,21 @@
-//  Simple request-reply broker
+/*
+ * Copyright (C) 2023 by Antonio Solida e Davide Palma
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
+
 
 #include "zhelpers.h"
 
@@ -9,9 +26,7 @@ int main (void)
     void *frontend = zmq_socket (context, ZMQ_ROUTER);
     void *backend  = zmq_socket (context, ZMQ_DEALER);
     zmq_bind (frontend, "tcp://*:5559");
-    //printf("%s\n",strerror(errno));
     zmq_bind (backend,  "tcp://*:5560");
-    //printf("%s\n",strerror(errno));
 
     //  Initialize poll set
     zmq_pollitem_t items [] = {
@@ -47,7 +62,6 @@ int main (void)
             }
         }
     }
-    //  We never get here, but clean up anyhow
     zmq_close (frontend);
     zmq_close (backend);
     zmq_ctx_destroy (context);

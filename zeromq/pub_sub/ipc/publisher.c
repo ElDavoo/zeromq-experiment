@@ -1,4 +1,22 @@
 /*
+ * Copyright (C) 2023 by Antonio Solida e Davide Palma
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
+
+/*
 Publisher will send a particular payload according on parameter passed to it:
 - no parameter: payload dimension increased every message;
 - integer parameter: payload dimension fixed (dim(parameter)).
@@ -69,10 +87,7 @@ int main (int argc, char **argv){
         struct timespec timespec_diff;
         sub_timespec(timespec_start, timespec_end, &timespec_diff);
         telemetry(publisher_tel, count, timespec_diff.tv_sec + (timespec_diff.tv_nsec / 1000000000.0f));
-        /*printf ("[%s] %s. RTT: %ld us\n", address, contents, (timespec_end.tv_nsec - timespec_start.tv_nsec)/1000);
-        if (timespec_end.tv_nsec - timespec_start.tv_nsec >= 0) 
-            telemetry(publisher_tel, count, (timespec_end.tv_nsec - timespec_start.tv_nsec)/1000);
-        */
+
         free (address);
         free (contents);
         free (message);
@@ -83,63 +98,3 @@ int main (int argc, char **argv){
     zmq_ctx_destroy (context);
     return 0;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*#include <czmq.h>
-
-int main(int argc, char ** argv) {
-    zsock_t *socket = zsock_new_pub("tcp://127.0.0.1:5555"); //localhost non funge
-    assert(socket);
-    zsock_t *socket2 = zsock_new_sub("tcp://127.0.0.1:5556", "TOPIC2");
-    assert(socket2);
-
-    zsock_send(socket, "ss", "TOPIC", "Init");
-
-    char *topic;
-    char *frame;
-    zmsg_t *msg;
-
-    while(!zsys_interrupted) {
-        zsys_info("Publishing");
-        zsock_send(socket, "ss", "TOPIC", "ME");//invia un messaggio con nome topic + stringa
-        zclock_sleep(3000);
-
-        int rc = zsock_recv(socket2, "sm", &topic, &msg);
-        assert(rc == 0);
-        zsys_info("Recv on %s", topic);
-        while(frame = zmsg_popstr(msg)) { //poppa le stringhe dal mess.
-            zsys_info("> %s", frame);
-            free(frame);
-        }
-    }
-
-    zsock_destroy(&socket);
-    return 0;
-}*/
