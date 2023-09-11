@@ -26,6 +26,10 @@ L'obiettivo del progetto è di confrontare la latenza delle due soluzioni softwa
 I pattern di comunicazioni sono indipendenti dalla soluzione scelta.  
 Tuttavia, in ROS2 si preferisce utilizzare il pattern PUB-SUB.
 ### Pattern Pubblicazione - Sottoscrizione (PUB-SUB)
+![Pattern Pubblicazione - Sottoscrizione](docs/pub_sub.png)
+
+Nel pattern publicazione - sottoscrizione (documentato in lingua inglese come publisher - subscriber pattern), i nodi si interfacciano tra di loro scambiandosi direttamente determinate informazioni detti messaggi.
+Entrando maggiormente nel dettaglio, il nodo che fa da publisher pubblicherà un messaggio all'interno di un preciso topic, ovvero una sorta di mailbox, a cui si iscriveranno tutti i nodi subscriber che vorranno recepire quelle informazioni. Non è escluso che ci siano più nodi che pubblicano i messaggi ed inoltre solo i nodi di tipo publisher potranno inviare messaggi al topic: si può parlare, quindi, di comunicazione N-to-N unidirezionale.
 
 ### Pattern del maggiordomo
 ![Pattern del maggiordomo](docs/majordomo.png)  
@@ -35,7 +39,24 @@ nodo responsabile dell'elaborazione dei dati (server). Ciò rende possibile l'ut
 server e client e garantisce una certa affidabilità nello scambio di messaggi.
 
 TODO: Capire e spiegare con degli schemi come funziona la comunicazione intraprocesso, interprocesso e internodo su ROS2
-TODO: Spiegare con degli schemi come funziona la comunicazione intraprocesso, interprocesso e internodo su ZeroMQ  
+### Comunicazione tra nodi ROS2
+ROS2 utilizza una nuova infrastruttura di comunicazione basata su Data Distribution Service (DDS), che migliora le prestazioni, la scalabilità e la sicurezza rispetto alla vecchia infrastruttura ROS1 basata sul protocollo TCP/UDP. Esistono implementazioni propritarie del DDS prodotte da svariati produttori ma ROS2 Foxy utilizza la [eProsima Fast](https://docs.ros.org/en/foxy/Installation/DDS-Implementations/Working-with-eProsima-Fast-DDS.html). 
+Essa è utilizzata under-the-hood dal framework in maniera trasparente per l'utente.
+![ROS2 DDS vs ROS1 TCP/UDP](docs/ros2_dds.png)
+### Comunicazione tra nodi ZeroMQ
+ZeroMQ permette l'utilizzo di svariati protocolli di trasporto, la cui scelta è dettata dai requisiti del sistema che si sta andando a sviluppare ed esse risultano essere invisibili alle API da utilizzare per la trasmissione dei messaggi; possono, quindi, essere utilizzate indipendentemente dal protocollo. Particolarità degne di nota risultano essere il fatto che non esiste un metodo `zmq_accept()`, quindi quando un socket è associato a un endpoint, inizia automaticamente ad accettare connessioni ed inoltre che la connessione di rete stessa avviene in background e ZeroMQ si riconnetterà automaticamente se la connessione di rete viene interrotta (ad esempio, se il peer scompare e poi ritorna); quindi si può notare che tutto avviene in maniera trasparente rispetto all'utente.
+
+Negli applicativi sviluppati per il benchmark, si è preferito utilizzare il tcp e l'ipc (interprocesso) in quanto sono due protocolli che maggiormente si avvicinano a quelli presenti in ROS2.
+#### TCP
+```sh
+zmq_bind (socket, "tcp://*:5555");
+```
+TCP è il trasporto unicast onnipresente, affidabile e affidabile. Nell'implementazione di ZeroMQ, è di tipo disconnesso in quanto non richiede che l'endpoint esista prima di connettersi ad esso. I client e i server possono connettersi e associarsi in qualsiasi momento, possono chidersi e riaprirsi e rimanere sempre trasparenti alle applicazioni.
+#### IPC
+```sh
+zmq_bind (socket, "ipc://somename");
+```
+Anche IPC risulta essere disconnesso, come TCP; è implementato creando un file che verrà acceduto in scrittura dai nodi publisher e in sola lettura dai nodi subscriber.
 
 ![ROS2 Bozza di schema](https://github.com/ElDavoo/zeromq-experiment/assets/4050967/5eca201f-98d8-4ffa-913b-0ac451c3761a)
 
