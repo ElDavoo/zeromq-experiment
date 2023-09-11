@@ -38,7 +38,6 @@ Nel pattern del maggiordomo, i nodi client si interfacciano con un nodo intermed
 nodo responsabile dell'elaborazione dei dati (server). Ciò rende possibile l'utilizzo di intestazioni diversi, la presenza dinamica di più
 server e client e garantisce una certa affidabilità nello scambio di messaggi.
 
-TODO: Capire e spiegare con degli schemi come funziona la comunicazione intraprocesso, interprocesso e internodo su ROS2
 ### Comunicazione tra nodi ROS2
 ROS2 utilizza una nuova infrastruttura di comunicazione basata su Data Distribution Service (DDS), che migliora le prestazioni, la scalabilità e la sicurezza rispetto alla vecchia infrastruttura ROS1 basata sul protocollo TCP/UDP. Esistono implementazioni propritarie del DDS prodotte da svariati produttori ma ROS2 Foxy utilizza la [eProsima Fast](https://docs.ros.org/en/foxy/Installation/DDS-Implementations/Working-with-eProsima-Fast-DDS.html). 
 Essa è utilizzata under-the-hood dal framework in maniera trasparente per l'utente.
@@ -58,7 +57,12 @@ zmq_bind (socket, "ipc://somename");
 ```
 Anche IPC risulta essere disconnesso, come TCP; è implementato creando un file che verrà acceduto in scrittura dai nodi publisher e in sola lettura dai nodi subscriber.
 
-![ROS2 Bozza di schema](https://github.com/ElDavoo/zeromq-experiment/assets/4050967/5eca201f-98d8-4ffa-913b-0ac451c3761a)
+### Schemi di comunicazione
+Sono riportati due schemi che riassumono le comunicazioni che avvengono tra i vari nodi, sia per le implementazioni ROS2 che per quelle ZeroMQ, con la nomenclatura dei topic utilizzata. In quest'ultimo, in quanto un canale di comunicazione (socket TCP o IPC) può essere utilizzato in maniera bidirezionale, tra le varie coppie di nodi è presenta una sola porta.
+#### ZeroMQ
+![ZeroMq Schema](docs/zeromq_schema.jpg)
+#### ROS2
+![ROS2 schema](https://github.com/ElDavoo/zeromq-experiment/assets/4050967/5eca201f-98d8-4ffa-913b-0ac451c3761a)
 
 # Valutazione
 ## Ambiente di valutazione
