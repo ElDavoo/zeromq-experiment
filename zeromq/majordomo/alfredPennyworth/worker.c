@@ -43,17 +43,17 @@ int main (void)
             //assert (rc != -1);
             void* data = zmq_msg_data(&part);
             size_t size = zmq_msg_size(&part);
-            printf("Received message: %.*s\n", (int)size, (char*)data);
+            // printf("Received message: %c\n", (int)size, data);
 
             /* Determine if more message parts are to follow */
             rc = zmq_getsockopt (responder, ZMQ_RCVMORE, &more, &more_size);
             assert (rc == 0);
             zmq_msg_close (&part); 
-            if (!more) printf("\n");
+            // if (!more) printf("\n");
         } while (more);
 
         //do some stuffs
-        sleep (1);
+        s_sleep(10);
 
         //  Send reply back to client
         zmq_msg_t part;

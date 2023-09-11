@@ -72,7 +72,7 @@ int main (int argc, char **argv)
         zmq_msg_init_size (&part, sizeof("MDPC01"));
         memcpy (zmq_msg_data (&part), "MDPC01", sizeof("MDPC01"));
         zmq_msg_send (&part, requester, ZMQ_SNDMORE);
-        printf("Send message: %.*s\n", (int)sizeof("MDPC01"), "MDPC01");
+        // printf("Send message: %.*s\n", (int)sizeof("MDPC01"), "MDPC01");
         zmq_msg_init_size (&part, sizeof("Service"));
         memcpy (zmq_msg_data (&part), "Service", sizeof("Service"));
         zmq_msg_send (&part, requester, ZMQ_SNDMORE);
@@ -108,18 +108,18 @@ int main (int argc, char **argv)
             //assert (rc != -1);
             void* data = zmq_msg_data(&part);
             size_t size = zmq_msg_size(&part);
-            printf("Received message: %.*s\n", (int)size, (char*)data);
+            // printf("Received message: %.*s\n", (int)size, (char*)data);
 
             /* Determine if more message parts are to follow */
             rc = zmq_getsockopt (requester, ZMQ_RCVMORE, &more, &more_size);
             assert (rc == 0);
             zmq_msg_close (&part); 
-            if (!more) printf("\n");
+            // if (!more) printf("\n");
         } while (more);
         free(message);
         struct timespec timespec_diff;
         sub_timespec(timespec_start, timespec_end, &timespec_diff);
-        telemetry(publisher_tel, count, timespec_diff.tv_sec + (timespec_diff.tv_nsec / 1000000000.0f));
+        telemetry(publisher_tel, count, (timespec_diff.tv_sec * 1000000000.0f) + timespec_diff.tv_nsec - (10 *1000*1000) );
     }
     zmq_close (requester);
     zmq_ctx_destroy (context);
