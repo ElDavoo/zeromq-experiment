@@ -40,9 +40,9 @@ int main (void)
 
             /* Block until a message is available to be received from socket */
             rc = zmq_msg_recv (&part, responder, 0);
-            //assert (rc != -1);
-            void* data = zmq_msg_data(&part);
-            size_t size = zmq_msg_size(&part);
+            // assert (rc != -1);
+            // void* data = zmq_msg_data(&part);
+            // size_t size = zmq_msg_size(&part);
             // printf("Received message: %c\n", (int)size, data);
 
             /* Determine if more message parts are to follow */

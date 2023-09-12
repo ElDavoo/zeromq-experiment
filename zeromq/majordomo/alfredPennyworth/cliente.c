@@ -106,8 +106,8 @@ int main (int argc, char **argv)
                 time = 0;
             }
             //assert (rc != -1);
-            void* data = zmq_msg_data(&part);
-            size_t size = zmq_msg_size(&part);
+            //void* data = zmq_msg_data(&part);
+            //size_t size = zmq_msg_size(&part);
             // printf("Received message: %.*s\n", (int)size, (char*)data);
 
             /* Determine if more message parts are to follow */

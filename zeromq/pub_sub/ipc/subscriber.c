@@ -45,7 +45,7 @@ int main (void){
 
         s_sendmore (publisher_pong, "Pong");
         s_send (publisher_pong, " pong");
-        printf ("[%s] %s\n", address, contents);
+        printf ("[%s] %c\n", address, contents[0]);
         //printf ("[%s] \n", address);
         free (address);
         free (contents);
