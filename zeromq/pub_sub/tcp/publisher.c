@@ -86,7 +86,7 @@ int main (int argc, char **argv){
         clock_gettime(CLOCK_MONOTONIC, &timespec_end);
         struct timespec timespec_diff;
         sub_timespec(timespec_start, timespec_end, &timespec_diff);
-        telemetry(publisher_tel, count, timespec_diff.tv_sec + (timespec_diff.tv_nsec / 1000000000.0f));
+        telemetry(publisher_tel, count, (timespec_diff.tv_sec * 1000000000.0f) + timespec_diff.tv_nsec);
         /*printf ("[%s] %s. RTT: %ld us\n", address, contents, (timespec_end.tv_nsec - timespec_start.tv_nsec)/1000);
         if (timespec_end.tv_nsec - timespec_start.tv_nsec >= 0) 
             telemetry(publisher_tel, count, (timespec_end.tv_nsec - timespec_start.tv_nsec)/1000);
