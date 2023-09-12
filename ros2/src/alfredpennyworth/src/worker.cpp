@@ -18,25 +18,26 @@
 
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
+#include "plotter_time/msg/data.hpp"
 
 class MyNode : public rclcpp::Node {
 public:
     MyNode() : Node("my_node") {
-        publisher_ = this->create_publisher<std_msgs::msg::String>("backend", 10);
-        subscriber_ = this->create_subscription<std_msgs::msg::String>("brokered", 10,
+        publisher_ = this->create_publisher<plotter_time::msg::Data>("backend", 10);
+        subscriber_ = this->create_subscription<plotter_time::msg::Data>("brokered", 10,
             std::bind(&MyNode::handle_message, this, std::placeholders::_1));
     }
 
 private:
-    void handle_message(const std_msgs::msg::String::SharedPtr msg){
-        std_msgs::msg::String reply_msg;
-        reply_msg.data = "reply";
+    void handle_message(const plotter_time::msg::Data::SharedPtr msg){
+        plotter_time::msg::Data reply_msg;
+        reply_msg.data.push_back(123);
         publisher_->publish(reply_msg);
-        RCLCPP_INFO(this->get_logger(), "Received message: %s", msg->data.c_str());
+        RCLCPP_INFO(this->get_logger(), "Received message: %d", msg->data[0]);
     }
 
-    rclcpp::Publisher<std_msgs::msg::String>::SharedPtr publisher_;
-    rclcpp::Subscription<std_msgs::msg::String>::SharedPtr subscriber_;
+    rclcpp::Publisher<plotter_time::msg::Data>::SharedPtr publisher_;
+    rclcpp::Subscription<plotter_time::msg::Data>::SharedPtr subscriber_;
 };
 
 int main(int argc, char **argv) {

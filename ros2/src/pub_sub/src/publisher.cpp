@@ -127,7 +127,7 @@ private:
     message_time.dim = count_;
     struct timespec timespec_diff;
     sub_timespec(timespec_start, timespec_end, &timespec_diff);
-    message_time.time = (timespec_diff.tv_sec * 1000000000.0f) + timespec_diff.tv_nsec; //formattata come x,y secondi
+    message_time.time = (timespec_diff.tv_sec * 1000000000.0f) + timespec_diff.tv_nsec;
     publisher_time->publish(message_time);
 
     RCLCPP_INFO(this->get_logger(), "On reception, time is: %lld", timespec_end.tv_nsec);
