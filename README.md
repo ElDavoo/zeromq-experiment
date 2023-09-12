@@ -39,13 +39,29 @@ nodo responsabile dell'elaborazione dei dati (server). Ciò rende possibile l'ut
 server e client e garantisce una certa affidabilità nello scambio di messaggi.
 
 ### Comunicazione tra nodi ROS2
-ROS2 utilizza una nuova infrastruttura di comunicazione basata su Data Distribution Service (DDS), che migliora le prestazioni, la scalabilità e la sicurezza rispetto alla vecchia infrastruttura ROS1 basata sul protocollo TCP/UDP. Esistono implementazioni propritarie del DDS prodotte da svariati produttori ma ROS2 Foxy utilizza la [eProsima Fast](https://docs.ros.org/en/foxy/Installation/DDS-Implementations/Working-with-eProsima-Fast-DDS.html). 
-Essa è utilizzata under-the-hood dal framework in maniera trasparente per l'utente.
+ROS2 utilizza una nuova infrastruttura di comunicazione basata su Data Distribution Service (DDS), che migliora le prestazioni, la scalabilità e la sicurezza rispetto alla vecchia infrastruttura ROS1 basata sul protocollo TCP/UDP. Esistono implementazioni propritarie del DDS prodotte da svariati produttori ma è stata utilizzata quella utilizzata da ROS2 Foxy di default, ovvero [eProsima Fast](https://docs.ros.org/en/foxy/Installation/DDS-Implementations/Working-with-eProsima-Fast-DDS.html).
 ![ROS2 DDS vs ROS1 TCP/UDP](docs/ros2_dds.png)
+Sono state anche esplorate alcune configurazioni relative al QoS, nella fattispecie quelle necessarie al fine di rendere il canale non affidabile e quindi rendere le sue proprietà simili a quelle del protocollo UDP.
+Essa è utilizzata under-the-hood dal framework in maniera trasparente per l'utente.
+```c
+static const rmw_qos_profile_t unreliable_qos_profile =
+{
+    RMW_QOS_POLICY_HISTORY_KEEP_LAST,
+    0, //queue depth
+    RMW_QOS_POLICY_RELIABILITY_BEST_EFFORT,
+    RMW_QOS_POLICY_DURABILITY_VOLATILE,
+    RMW_QOS_DEADLINE_DEFAULT,
+    RMW_QOS_LIFESPAN_DEFAULT,
+    RMW_QOS_POLICY_LIVELINESS_SYSTEM_DEFAULT,
+    RMW_QOS_LIVELINESS_LEASE_DURATION_DEFAULT,
+    false // useless
+};
+```
+
 ### Comunicazione tra nodi ZeroMQ
 ZeroMQ permette l'utilizzo di svariati protocolli di trasporto, la cui scelta è dettata dai requisiti del sistema che si sta andando a sviluppare ed esse risultano essere invisibili alle API da utilizzare per la trasmissione dei messaggi; possono, quindi, essere utilizzate indipendentemente dal protocollo. Particolarità degne di nota risultano essere il fatto che non esiste un metodo `zmq_accept()`, quindi quando un socket è associato a un endpoint, inizia automaticamente ad accettare connessioni ed inoltre che la connessione di rete stessa avviene in background e ZeroMQ si riconnetterà automaticamente se la connessione di rete viene interrotta (ad esempio, se il peer scompare e poi ritorna); quindi si può notare che tutto avviene in maniera trasparente rispetto all'utente.
 
-Negli applicativi sviluppati per il benchmark, si è preferito utilizzare il tcp e l'ipc (interprocesso) in quanto sono due protocolli che maggiormente si avvicinano a quelli presenti in ROS2.
+Negli applicativi sviluppati per il benchmark, si è preferito utilizzare il tcp e l'ipc (interprocesso) in quanto sono due protocolli le cui proprietà maggiormente si avvicinano a quelli presenti in ROS2.
 #### TCP
 ```sh
 zmq_bind (socket, "tcp://*:5555");
