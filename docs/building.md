@@ -37,6 +37,7 @@ Si è anche scelto di eseguire i nodi su un singolo core al fine di comparare i 
 ![Plotjuggler con ZeroMQ](plotj1.png)
 - ROS2:
 ![Plotjuggler con ROS2](plotj2.png)
+
 Al fine di leggere in tempo reale i dati del topic telemetria di ROS2, Plotjuggler richiede che sulla macchina sia esso installato. 
 
 
