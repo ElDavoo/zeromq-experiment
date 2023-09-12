@@ -156,11 +156,29 @@ Ogni test è stato eseguito su entrambe le schede, con PlotJuggler a registrare 
 
 
 ## Risultati delle valutazioni
-[issue](https://github.com/ElDavoo/zeromq-experiment/issues/1)
-Qua grafici, dati, etc etc
+- ZeroMQ con nodi su differenti core
+![ZeroMq](docs/0mq_different_cpus.png)
+- ZeroMQ con nodi sul medesimo core
+![ZeroMq](docs/0mq_same_cpu.png)
+- ROS2 con nodi su differenti core
+![ROS2](docs/ros2_different_cpus.png)
+- ROS2 con nodi sul medesimo core
+![ROS2](docs/ros2_same_cpu.png)
+- Visione d'insieme dei vari benchmark
+![Insieme](docs/all_together.png)
 
 # Conclusioni
-ZeroMQ va bene per messaggi piccoli ed è più veloce, o forse no? 
+Dai vari benchmark effettuati con ZeroMQ è possibile evincere che:
+1. Non si notano differenze apprezzabili tra un canale di comunicazione instaurato via TCP e uno via IPC.
+2. Il **pattern publisher - subscriber** risulta essere più prevedibile rispetto al **pattern del maggiordomo** in quanto sono presenti delle oscillazioni tra i valori di RTT (per rendere il grafico maggiormente leggibile è stato applicata una media mobile a 10 campioni).
+
+Dai benchmark su ROS2 si può notare che:
+1. Il **pattern publisher - subscriber** e quello del **maggiordomo** si equivalgono con un leggero vantaggio a favore di quest'ultimo.
+
+Inoltre è possibile vedere anche una differenza di comportamento in funzione del numero di core utilizzati: infatti ZeroMQ, nonostante abbia *under-the-hood* il supporto multi-thread, fatica in una configurazione multi-core a differenza di ROS2 che risulta essere penalizzato su una configurazione single-core, presumibilmente a causa dell'overhead applicato sui nodi essendo un framework a differenza di ZeroMQ il quale è una libreria.
+![Insieme](docs/core_comparison.png)
+
+Si può concludere, quindi, dicendo che ambedue le soluzioni abbiano dei vantaggi e degli svantaggi nel loro utilizzo, a seconda che si lavori con sistemi che possano trarre vantaggio da più core e dalla tipologia di pattern richiesto.
 
 # Riproduzione del progetto
 Seguire la
