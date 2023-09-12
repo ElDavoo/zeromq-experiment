@@ -41,7 +41,7 @@ server e client e garantisce una certa affidabilità nello scambio di messaggi.
 ### Comunicazione tra nodi ROS2
 ROS2 utilizza una nuova infrastruttura di comunicazione basata su Data Distribution Service (DDS), che migliora le prestazioni, la scalabilità e la sicurezza rispetto alla vecchia infrastruttura ROS1 basata sul protocollo TCP/UDP. Esistono implementazioni propritarie del DDS prodotte da svariati produttori ma è stata utilizzata quella utilizzata da ROS2 Foxy di default, ovvero [eProsima Fast](https://docs.ros.org/en/foxy/Installation/DDS-Implementations/Working-with-eProsima-Fast-DDS.html).
 ![ROS2 DDS vs ROS1 TCP/UDP](docs/ros2_dds.png)
-Sono state anche esplorate alcune configurazioni relative al QoS, nella fattispecie quelle necessarie al fine di rendere il canale non affidabile e quindi rendere le sue proprietà simili a quelle del protocollo UDP.
+Sono state anche esplorate alcune configurazioni relative al QoS, nella fattispecie quelle necessarie al fine di rendere il canale non affidabile sulla falsariga del protocollo UDP.
 Essa è utilizzata under-the-hood dal framework in maniera trasparente per l'utente.
 ```c
 static const rmw_qos_profile_t unreliable_qos_profile =
@@ -59,14 +59,16 @@ static const rmw_qos_profile_t unreliable_qos_profile =
 ```
 
 ### Comunicazione tra nodi ZeroMQ
-ZeroMQ permette l'utilizzo di svariati protocolli di trasporto, la cui scelta è dettata dai requisiti del sistema che si sta andando a sviluppare ed esse risultano essere invisibili alle API da utilizzare per la trasmissione dei messaggi; possono, quindi, essere utilizzate indipendentemente dal protocollo. Particolarità degne di nota risultano essere il fatto che non esiste un metodo `zmq_accept()`, quindi quando un socket è associato a un endpoint, inizia automaticamente ad accettare connessioni ed inoltre che la connessione di rete stessa avviene in background e ZeroMQ si riconnetterà automaticamente se la connessione di rete viene interrotta (ad esempio, se il peer scompare e poi ritorna); quindi si può notare che tutto avviene in maniera trasparente rispetto all'utente.
+ZeroMQ permette l'utilizzo di svariati protocolli di trasporto, la cui scelta è dettata dai requisiti del sistema che si sta andando a sviluppare ed esse risultano essere invisibili alle API da utilizzare per la trasmissione dei messaggi; possono, quindi, essere utilizzate indipendentemente dal protocollo. Particolarità degne di nota risultano essere: 
+1. non esiste un metodo `zmq_accept()`, quindi quando un socket è associato a un endpoint, inizia automaticamente ad accettare connessioni;
+2. la connessione di rete stessa avviene in background. ZeroMQ, si riconnetterà automaticamente se la connessione di rete dovesse essere interrotta (ad esempio, se il peer scompare e poi ritorna); quindi tutto avviene in maniera trasparente rispetto all'utente.
 
 Negli applicativi sviluppati per il benchmark, si è preferito utilizzare il tcp e l'ipc (interprocesso) in quanto sono due protocolli le cui proprietà maggiormente si avvicinano a quelli presenti in ROS2.
 #### TCP
 ```sh
 zmq_bind (socket, "tcp://*:5555");
 ```
-TCP è il trasporto unicast onnipresente, affidabile e affidabile. Nell'implementazione di ZeroMQ, è di tipo disconnesso in quanto non richiede che l'endpoint esista prima di connettersi ad esso. I client e i server possono connettersi e associarsi in qualsiasi momento, possono chidersi e riaprirsi e rimanere sempre trasparenti alle applicazioni.
+TCP è il trasporto unicast onnipresente, affidabile e affidabile. Nell'implementazione di ZeroMQ, è di tipo disconnesso in quanto non richiede che l'endpoint esista prima di connettersi ad esso. I client e i server possono connettersi e associarsi in qualsiasi momento, possono chiudersi e riaprirsi e rimanere sempre trasparenti alle applicazioni.
 #### IPC
 ```sh
 zmq_bind (socket, "ipc://somename");
@@ -140,7 +142,7 @@ In entrambi i casi, la parte inviante:
 2. **Campiona** il tempo attuale.
 3. **Attende la risposta** dalla parte ricevente.
 4. **Campiona** il tempo attuale.
-5. Calcola la **differenza** tra i due tempi campionati e manda al canale di **telemetria**.
+5. Calcola la **differenza** tra i due tempi campionati e manda al canale di **telemetria** (topic apposito).
 
 Questa metodologia ci consente di calcolare il **Round Trip Time** (RTT) e di avere un'idea quindi della latenza, sia media che massima, del sistema, all'aumentare della dimensione del messaggio.
 
