@@ -1,0 +1,312 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<root>
+ <tabbed_widget parent="main_window" name="Main Window">
+  <Tab tab_name="No_diff_between_ipc_tcp_and_nois_slower_than_diff_slower_than_same" containers="1">
+   <Container>
+    <DockSplitter orientation="-" count="1" sizes="1">
+     <DockArea name="...">
+      <plot style="Lines" flip_x="false" mode="TimeSeries" flip_y="false">
+       <range bottom="-84031.412500" left="1000.000000" top="3576987.312500" right="1501000.000000"/>
+       <limitY/>
+       <curve color="#9467bd" name="zmq_pubsub_diff_ipc/rtt">
+        <transform alias="zmq_pubsub_diff_ipc/rtt[Moving Average]" name="Moving Average">
+         <options value="10" compensate_offset="false"/>
+        </transform>
+       </curve>
+       <curve color="#17becf" name="zmq_pubsub_diff_tcp/rtt">
+        <transform alias="zmq_pubsub_diff_tcp/rtt[Moving Average]" name="Moving Average">
+         <options value="10" compensate_offset="false"/>
+        </transform>
+       </curve>
+       <curve color="#ac6713" name="zmq_pubsub_nois_ipc/rtt">
+        <transform alias="zmq_pubsub_nois_ipc/rtt[Moving Average]" name="Moving Average">
+         <options value="10" compensate_offset="false"/>
+        </transform>
+       </curve>
+       <curve color="#1f77b4" name="zmq_pubsub_nois_tcp/rtt">
+        <transform alias="zmq_pubsub_nois_tcp/rtt[Moving Average]" name="Moving Average">
+         <options value="10" compensate_offset="false"/>
+        </transform>
+       </curve>
+       <curve color="#d62728" name="zmq_pubsub_same_ipc/rtt">
+        <transform alias="zmq_pubsub_same_ipc/rtt[Moving Average]" name="Moving Average">
+         <options value="10" compensate_offset="false"/>
+        </transform>
+       </curve>
+       <curve color="#1ac938" name="zmq_pubsub_same_tcp/rtt">
+        <transform alias="zmq_pubsub_same_tcp/rtt[Moving Average]" name="Moving Average">
+         <options value="10" compensate_offset="false"/>
+        </transform>
+       </curve>
+      </plot>
+     </DockArea>
+    </DockSplitter>
+   </Container>
+  </Tab>
+  <Tab tab_name="zmq maj slower than pubsub" containers="1">
+   <Container>
+    <DockSplitter orientation="-" count="1" sizes="1">
+     <DockArea name="...">
+      <plot style="Lines" flip_x="false" mode="TimeSeries" flip_y="false">
+       <range bottom="-172145.852500" left="1000.000000" top="7189679.352500" right="1501000.000000"/>
+       <limitY/>
+       <curve color="#1ac938" name="zmq_majord_diff/rtt">
+        <transform alias="zmq_majord_diff/rtt[Moving Average]" name="Moving Average">
+         <options value="10" compensate_offset="false"/>
+        </transform>
+       </curve>
+       <curve color="#ff7f0e" name="zmq_majord_nois/rtt">
+        <transform alias="zmq_majord_nois/rtt[Moving Average]" name="Moving Average">
+         <options value="10" compensate_offset="false"/>
+        </transform>
+       </curve>
+       <curve color="#f14cc1" name="zmq_majord_same/rtt">
+        <transform alias="zmq_majord_same/rtt[Moving Average]" name="Moving Average">
+         <options value="10" compensate_offset="false"/>
+        </transform>
+       </curve>
+       <curve color="#9467bd" name="zmq_pubsub_diff_ipc/rtt">
+        <transform alias="zmq_pubsub_diff_ipc/rtt[Moving Average]" name="Moving Average">
+         <options value="10" compensate_offset="false"/>
+        </transform>
+       </curve>
+       <curve color="#17becf" name="zmq_pubsub_diff_tcp/rtt">
+        <transform alias="zmq_pubsub_diff_tcp/rtt[Moving Average]" name="Moving Average">
+         <options value="10" compensate_offset="false"/>
+        </transform>
+       </curve>
+       <curve color="#bcbd22" name="zmq_pubsub_nois_ipc/rtt">
+        <transform alias="zmq_pubsub_nois_ipc/rtt[Moving Average]" name="Moving Average">
+         <options value="10" compensate_offset="false"/>
+        </transform>
+       </curve>
+       <curve color="#1f77b4" name="zmq_pubsub_nois_tcp/rtt">
+        <transform alias="zmq_pubsub_nois_tcp/rtt[Moving Average]" name="Moving Average">
+         <options value="10" compensate_offset="false"/>
+        </transform>
+       </curve>
+       <curve color="#d62728" name="zmq_pubsub_same_ipc/rtt">
+        <transform alias="zmq_pubsub_same_ipc/rtt[Moving Average]" name="Moving Average">
+         <options value="10" compensate_offset="false"/>
+        </transform>
+       </curve>
+       <curve color="#1ac938" name="zmq_pubsub_same_tcp/rtt">
+        <transform alias="zmq_pubsub_same_tcp/rtt[Moving Average]" name="Moving Average">
+         <options value="10" compensate_offset="false"/>
+        </transform>
+       </curve>
+      </plot>
+     </DockArea>
+    </DockSplitter>
+   </Container>
+  </Tab>
+  <Tab tab_name="ros benefits from more cores and majordomo is faster" containers="1">
+   <Container>
+    <DockSplitter orientation="-" count="1" sizes="1">
+     <DockArea name="...">
+      <plot style="Lines" flip_x="false" mode="TimeSeries" flip_y="false">
+       <range bottom="96188.462500" left="6000.000000" top="2937813.437500" right="1531000.000000"/>
+       <limitY/>
+       <curve color="#f14cc1" name="ros_majord_diff/time/time">
+        <transform alias="ros_majord_diff/time/time[Moving Average]" name="Moving Average">
+         <options value="10" compensate_offset="false"/>
+        </transform>
+       </curve>
+       <curve color="#9467bd" name="ros_majord_nois/time/time">
+        <transform alias="ros_majord_nois/time/time[Moving Average]" name="Moving Average">
+         <options value="10" compensate_offset="false"/>
+        </transform>
+       </curve>
+       <curve color="#bcbd22" name="ros_pubsub_diff/time/time">
+        <transform alias="ros_pubsub_diff/time/time[Moving Average]" name="Moving Average">
+         <options value="10" compensate_offset="false"/>
+        </transform>
+       </curve>
+       <curve color="#1f77b4" name="ros_pubsub_nois/time/time">
+        <transform alias="ros_pubsub_nois/time/time[Moving Average]" name="Moving Average">
+         <options value="10" compensate_offset="false"/>
+        </transform>
+       </curve>
+      </plot>
+     </DockArea>
+    </DockSplitter>
+   </Container>
+  </Tab>
+  <Tab tab_name="ros majordomo faster and more reliable" containers="1">
+   <Container>
+    <DockSplitter orientation="-" count="1" sizes="1">
+     <DockArea name="...">
+      <plot style="Lines" flip_x="false" mode="TimeSeries" flip_y="false">
+       <range bottom="908.977500" left="3000.000000" top="6173145.922500" right="1516000.000000"/>
+       <limitY/>
+       <curve color="#f14cc1" name="ros_majord_diff/time/time"/>
+       <curve color="#496afb" name="ros_majord_nois/time/time"/>
+       <curve color="#1ac938" name="zmq_majord_diff/rtt">
+        <transform alias="zmq_majord_diff/rtt[Moving Average]" name="Moving Average">
+         <options value="10" compensate_offset="false"/>
+        </transform>
+       </curve>
+       <curve color="#f14c4e" name="zmq_majord_same/rtt"/>
+      </plot>
+     </DockArea>
+    </DockSplitter>
+   </Container>
+  </Tab>
+  <Tab tab_name="zmq performs better in case of cpu pinning but is more unstable" containers="1">
+   <Container>
+    <DockSplitter orientation="-" count="1" sizes="1">
+     <DockArea name="...">
+      <plot style="Lines" flip_x="false" mode="TimeSeries" flip_y="false">
+       <range bottom="-85979.025000" left="1000.000000" top="3625772.025000" right="1531000.000000"/>
+       <limitY/>
+       <curve color="#00ff0c" name="ros_pubsub_diff/time/time"/>
+       <curve color="#1f77b4" name="ros_pubsub_nois/time/time"/>
+       <curve color="#9467bd" name="zmq_pubsub_diff_ipc/rtt"/>
+       <curve color="#bcbd22" name="zmq_pubsub_nois_ipc/rtt">
+        <transform alias="zmq_pubsub_nois_ipc/rtt[Moving Average]" name="Moving Average">
+         <options value="10" compensate_offset="false"/>
+        </transform>
+       </curve>
+       <curve color="#d62728" name="zmq_pubsub_same_ipc/rtt"/>
+      </plot>
+     </DockArea>
+    </DockSplitter>
+   </Container>
+  </Tab>
+  <currentTabIndex index="4"/>
+ </tabbed_widget>
+ <use_relative_time_offset enabled="0"/>
+ <!-- - - - - - - - - - - - - - - -->
+ <!-- - - - - - - - - - - - - - - -->
+ <Plugins>
+  <plugin ID="DataLoad CSV">
+   <default time_axis="/count" delimiter="0"/>
+  </plugin>
+  <plugin ID="DataLoad MCAP"/>
+  <plugin ID="DataLoad ROS2 bags">
+   <use_header_stamp value="false"/>
+   <discard_large_arrays value="true"/>
+   <max_array_size value="100"/>
+   <boolean_strings_to_number value="true"/>
+   <remove_suffix_from_strings value="true"/>
+  </plugin>
+  <plugin ID="DataLoad ULog"/>
+  <plugin ID="MQTT Subscriber (Mosquitto)"/>
+  <plugin ID="ROS2 Topic Subscriber">
+   <use_header_stamp value="false"/>
+   <discard_large_arrays value="true"/>
+   <max_array_size value="100"/>
+   <boolean_strings_to_number value="true"/>
+   <remove_suffix_from_strings value="true"/>
+  </plugin>
+  <plugin ID="UDP Server"/>
+  <plugin ID="WebSocket Server"/>
+  <plugin ID="ZMQ Subscriber"/>
+  <plugin ID="Fast Fourier Transform"/>
+  <plugin ID="Quaternion to RPY"/>
+  <plugin ID="Reactive Script Editor">
+   <library code="--[[ Helper function to create a series from arrays&#xa;&#xa; new_series: a series previously created with ScatterXY.new(name)&#xa; prefix:     prefix of the timeseries, before the index of the array&#xa; suffix_X:   suffix to complete the name of the series containing the X value. If [nil], use the index of the array.&#xa; suffix_Y:   suffix to complete the name of the series containing the Y value&#xa; timestamp:   usually the tracker_time variable&#xa;              &#xa; Example:&#xa; &#xa; Assuming we have multiple series in the form:&#xa; &#xa;   /trajectory/node.{X}/position/x&#xa;   /trajectory/node.{X}/position/y&#xa;   &#xa; where {N} is the index of the array (integer). We can create a reactive series from the array with:&#xa; &#xa;   new_series = ScatterXY.new(&quot;my_trajectory&quot;) &#xa;   CreateSeriesFromArray( new_series, &quot;/trajectory/node&quot;, &quot;position/x&quot;, &quot;position/y&quot;, tracker_time );&#xa;--]]&#xa;&#xa;function CreateSeriesFromArray( new_series, prefix, suffix_X, suffix_Y, timestamp )&#xa;  &#xa;  --- clear previous values&#xa;  new_series:clear()&#xa;  &#xa;  --- Append points to new_series&#xa;  index = 0&#xa;  while(true) do&#xa;&#xa;    x = index;&#xa;    -- if not nil, get the X coordinate from a series&#xa;    if suffix_X ~= nil then &#xa;      series_x = TimeseriesView.find( string.format( &quot;%s.%d/%s&quot;, prefix, index, suffix_X) )&#xa;      if series_x == nil then break end&#xa;      x = series_x:atTime(timestamp)&#x9; &#xa;    end&#xa;    &#xa;    series_y = TimeseriesView.find( string.format( &quot;%s.%d/%s&quot;, prefix, index, suffix_Y) )&#xa;    if series_y == nil then break end &#xa;    y = series_y:atTime(timestamp)&#xa;    &#xa;    new_series:push_back(x,y)&#xa;    index = index+1&#xa;  end&#xa;end&#xa;&#xa;--[[ Similar to the built-in function GetSeriesNames(), but select only the names with a give prefix. --]]&#xa;&#xa;function GetSeriesNamesByPrefix(prefix)&#xa;  -- GetSeriesNames(9 is a built-in function&#xa;  all_names = GetSeriesNames()&#xa;  filtered_names = {}&#xa;  for i, name in ipairs(all_names)  do&#xa;    -- check the prefix&#xa;    if name:find(prefix, 1, #prefix) then&#xa;      table.insert(filtered_names, name);&#xa;    end&#xa;  end&#xa;  return filtered_names&#xa;end&#xa;&#xa;--[[ Modify an existing series, applying offsets to all their X and Y values&#xa;&#xa; series: an existing timeseries, obtained with TimeseriesView.find(name)&#xa; delta_x: offset to apply to each x value&#xa; delta_y: offset to apply to each y value &#xa;  &#xa;--]]&#xa;&#xa;function ApplyOffsetInPlace(series, delta_x, delta_y)&#xa;  -- use C++ indeces, not Lua indeces&#xa;  for index=0, series:size()-1 do&#xa;    x,y = series:at(index)&#xa;    series:set(index, x + delta_x, y + delta_y)&#xa;  end&#xa;end&#xa;"/>
+   <scripts/>
+  </plugin>
+  <plugin ID="CSV Exporter"/>
+  <plugin ID="ROS2 Topic Re-Publisher"/>
+ </Plugins>
+ <!-- - - - - - - - - - - - - - - -->
+ <previouslyLoaded_Datafiles>
+  <fileInfo prefix="ros_majord_diff" filename="david_ros_majord_diff.csv">
+   <selected_datasources value=""/>
+   <plugin ID="DataLoad CSV">
+    <default time_axis="/time/dim" delimiter="0"/>
+   </plugin>
+  </fileInfo>
+  <fileInfo prefix="ros_majord_nois" filename="david_ros_majord_nois.csv">
+   <selected_datasources value=""/>
+   <plugin ID="DataLoad CSV">
+    <default time_axis="/time/dim" delimiter="0"/>
+   </plugin>
+  </fileInfo>
+  <fileInfo prefix="ros_majord_same" filename="david_ros_majord_same.csv">
+   <selected_datasources value=""/>
+   <plugin ID="DataLoad CSV">
+    <default time_axis="/time/dim" delimiter="0"/>
+   </plugin>
+  </fileInfo>
+  <fileInfo prefix="ros_pubsub_diff" filename="david_ros_pubsub_diff.csv">
+   <selected_datasources value=""/>
+   <plugin ID="DataLoad CSV">
+    <default time_axis="/time/dim" delimiter="0"/>
+   </plugin>
+  </fileInfo>
+  <fileInfo prefix="ros_pubsub_nois" filename="david_ros_pubsub_nois.csv">
+   <selected_datasources value=""/>
+   <plugin ID="DataLoad CSV">
+    <default time_axis="/time/dim" delimiter="0"/>
+   </plugin>
+  </fileInfo>
+  <fileInfo prefix="ros_pubsub_same" filename="david_ros_pubsub_same.csv">
+   <selected_datasources value=""/>
+   <plugin ID="DataLoad CSV">
+    <default time_axis="/time/dim" delimiter="0"/>
+   </plugin>
+  </fileInfo>
+  <fileInfo prefix="zmq_majord_diff" filename="david_zmq_majord_diff.csv">
+   <selected_datasources value=""/>
+   <plugin ID="DataLoad CSV">
+    <default time_axis="/count" delimiter="0"/>
+   </plugin>
+  </fileInfo>
+  <fileInfo prefix="zmq_majord_nois" filename="david_zmq_majord_nois.csv">
+   <selected_datasources value=""/>
+   <plugin ID="DataLoad CSV">
+    <default time_axis="/count" delimiter="0"/>
+   </plugin>
+  </fileInfo>
+  <fileInfo prefix="zmq_majord_same" filename="david_zmq_majord_same.csv">
+   <selected_datasources value=""/>
+   <plugin ID="DataLoad CSV">
+    <default time_axis="/count" delimiter="0"/>
+   </plugin>
+  </fileInfo>
+  <fileInfo prefix="zmq_pubsub_diff_ipc" filename="david_zmq_pubsub_diff_ipc.csv">
+   <selected_datasources value=""/>
+   <plugin ID="DataLoad CSV">
+    <default time_axis="/count" delimiter="0"/>
+   </plugin>
+  </fileInfo>
+  <fileInfo prefix="zmq_pubsub_diff_tcp" filename="david_zmq_pubsub_diff_tcp.csv">
+   <selected_datasources value=""/>
+   <plugin ID="DataLoad CSV">
+    <default time_axis="/count" delimiter="0"/>
+   </plugin>
+  </fileInfo>
+  <fileInfo prefix="zmq_pubsub_nois_ipc" filename="david_zmq_pubsub_nois_ipc.csv">
+   <selected_datasources value=""/>
+   <plugin ID="DataLoad CSV">
+    <default time_axis="/count" delimiter="0"/>
+   </plugin>
+  </fileInfo>
+  <fileInfo prefix="zmq_pubsub_nois_tcp" filename="david_zmq_pubsub_nois_tcp.csv">
+   <selected_datasources value=""/>
+   <plugin ID="DataLoad CSV">
+    <default time_axis="/count" delimiter="0"/>
+   </plugin>
+  </fileInfo>
+  <fileInfo prefix="zmq_pubsub_same_ipc" filename="david_zmq_pubsub_same_ipc.csv">
+   <selected_datasources value=""/>
+   <plugin ID="DataLoad CSV">
+    <default time_axis="/count" delimiter="0"/>
+   </plugin>
+  </fileInfo>
+  <fileInfo prefix="zmq_pubsub_same_tcp" filename="david_zmq_pubsub_same_tcp.csv">
+   <selected_datasources value=""/>
+   <plugin ID="DataLoad CSV">
+    <default time_axis="/count" delimiter="0"/>
+   </plugin>
+  </fileInfo>
+ </previouslyLoaded_Datafiles>
+ <!-- - - - - - - - - - - - - - - -->
+ <customMathEquations/>
+ <snippets/>
+ <!-- - - - - - - - - - - - - - - -->
+</root>
+
