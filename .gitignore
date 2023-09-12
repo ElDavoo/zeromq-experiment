@@ -3,3 +3,5 @@ ros2/build
 ros2/install
 ros2/log
 .vscode/colcon.env
+data
+ros2/data

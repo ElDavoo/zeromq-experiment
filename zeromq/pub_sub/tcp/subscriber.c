@@ -1,3 +1,21 @@
+/*
+ * Copyright (C) 2023 by Antonio Solida e Davide Palma
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
+
 #include "zhelpers.h"
 
 int main (void){
@@ -24,12 +42,13 @@ int main (void){
         char *address = s_recv (subscriber);
         //  Read message contents
         char *contents = s_recv (subscriber);
-        printf ("[%s] %s\n", address, contents);
-        //printf ("[%s] \n", address);
-        free (address);
-        free (contents);
         s_sendmore (publisher_pong, "Pong");
         s_send (publisher_pong, " pong");
+        printf ("[%s] %s\n", address, contents);
+
+        free (address);
+        free (contents);
+
     }
     //  We never get here, but clean up anyhow
     zmq_close (subscriber);

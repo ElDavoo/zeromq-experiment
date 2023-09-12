@@ -10,7 +10,7 @@ set (name publisher)
 
 set(target ${p}${name})
 add_executable(${target} ${name}.c)
-target_link_libraries(${target} zmq cJSON zhelpers)
+target_link_libraries(${target} zmq cJSON zhelpers utils)
 set_target_properties(${target} PROPERTIES OUTPUT_NAME ${name})
 set_target_properties(${target} PROPERTIES EXPORT_NAME ${name})
 
@@ -18,6 +18,6 @@ set (name subscriber)
 
 set(target ${p}${name})
 add_executable(${target} ${name}.c)
-target_link_libraries(${target} zmq cJSON zhelpers)
+target_link_libraries(${target} zmq cJSON zhelpers utils)
 set_target_properties(${target} PROPERTIES OUTPUT_NAME ${name})
 set_target_properties(${target} PROPERTIES EXPORT_NAME ${name})

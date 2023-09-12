@@ -4,7 +4,7 @@
             "name": "Ros2",
             "includePath": [
                 "${workspaceFolder}/**",
-                "/opt/ros/foxy/include/**"
+                "/opt/ros/foxy/include/"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",
@@ -15,13 +15,16 @@
         },
         {
             "name": "Linux",
-            "includePath": [],
+            "includePath": [
+                "${workspaceFolder}/ros2/build/plotter_time/rosidl_generator_cpp",
+                "/opt/ros/foxy/include/**"
+            ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",
             "cStandard": "c11",
             "cppStandard": "gnu++14",
             "intelliSenseMode": "linux-gcc-x64",
-            "configurationProvider": "ms-vscode.cmake-tools"
+            "compileCommands": "${workspaceFolder}/build/compile_commands.json"
         }
     ],
     "version": 4

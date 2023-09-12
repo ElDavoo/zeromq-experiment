@@ -7,7 +7,7 @@ set(CMAKE_C_STANDARD 11)
 # Set build flags here
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Wno-unused-function")
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/common)
+include_directories(common)
 add_subdirectory(common)
 
 add_subdirectory(zeromq)
