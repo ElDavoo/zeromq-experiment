@@ -29,15 +29,36 @@ colcon build
 ## Esecuzione dei test
 ### Preparazione
 L'esecuzione richiede un terminale per ogni nodo (quindi da 2 a 3).
-Siccome abbiamo precedentemente impostato il parametro "isolcpus=1-3",
+Siccome abbiamo precedentemente impostato il parametro "*isolcpus=1-3*",
 abbiamo a nostra disposizione i core 1, 2 e 3.
+Si è anche scelto di eseguire i nodi su un singolo core al fine di comparare i risultati con l'esecuzione su più core.
 #### Impostazione di PlotJuggler
-Per ZeroMQ:  
-![foto](plotj1.png)
-
+- ZeroMQ:  
+![Plotjuggler con ZeroMQ](plotj1.png)
+- ROS2:
+![Plotjuggler con ROS2](plotj2.png)
+Al fine di leggere in tempo reale i dati del topic telemetria di ROS2, Plotjuggler richiede che sulla macchina sia esso installato. 
 
 
 ### Esecuzione test ZeroMQ
+#### Core singolo
+- Majordomo
+```sh
+taskset --cpu-list 1 build/zeromq/majordomo/alfredPennyworth/broker
+taskset --cpu-list 1 build/zeromq/majordomo/alfredPennyworth/cliente
+taskset --cpu-list 1 build/zeromq/majordomo/alfredPennyworth/worker
+```
+- PubSub IPC
+```sh
+taskset --cpu-list 1 build/zeromq/pub_sub/ipc/subscriber
+taskset --cpu-list 1 build/zeromq/pub_sub/ipc/publisher
+```
+- PubSub TCP
+```sh
+taskset --cpu-list 1 build/zeromq/pub_sub/tcp/subscriber
+taskset --cpu-list 1 build/zeromq/pub_sub/tcp/publisher
+```
+#### Core separati
 - Majordomo
 ```sh
 taskset --cpu-list 1 build/zeromq/majordomo/alfredPennyworth/broker
@@ -59,6 +80,24 @@ taskset --cpu-list 2 build/zeromq/pub_sub/tcp/publisher
 cd ros2
 source install/local_setup.bash
 ```
+#### Core singolo
+- Majordomo
+```sh
+taskset --cpu-list 1 build/zeromq/majordomo/alfredPennyworth/broker
+taskset --cpu-list 1 build/zeromq/majordomo/alfredPennyworth/cliente
+taskset --cpu-list 1 build/zeromq/majordomo/alfredPennyworth/worker
+```
+- PubSub IPC
+```sh
+taskset --cpu-list 1 build/zeromq/pub_sub/ipc/subscriber
+taskset --cpu-list 1 build/zeromq/pub_sub/ipc/publisher
+```
+- PubSub TCP
+```sh
+taskset --cpu-list 1 build/zeromq/pub_sub/tcp/subscriber
+taskset --cpu-list 1 build/zeromq/pub_sub/tcp/publisher
+```
+#### Core separati
 - PubSub
 ```sh
 taskset --cpu-list 1 ros2 run pub_sub subscriber

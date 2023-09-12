@@ -124,7 +124,7 @@ Libraries:
 
 E' stato usato
 [PlotJuggler](https://github.com/facontidavide/PlotJuggler) 3.7.1 
-per visualizzare in tempo reale la telemetria dei nodi.
+per visualizzare in tempo reale la telemetria dei nodi, installato su un pc separato.
 
 ## Metodologia di valutazione
 
