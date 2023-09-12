@@ -175,8 +175,10 @@ Dai vari benchmark effettuati con ZeroMQ è possibile evincere che:
 Dai benchmark su ROS2 si può notare che:
 1. Il **pattern publisher - subscriber** e quello del **maggiordomo** si equivalgono con un leggero vantaggio a favore di quest'ultimo.
 
-Inoltre è possibile vedere anche una differenza di comportamento in funzione del numero di core utilizzati: infatti ZeroMQ, nonostante abbia *under-the-hood* il supporto multi-thread, fatica in una configurazione multi-core a differenza di ROS2 che risulta essere penalizzato su una configurazione single-core, presumibilmente a causa dell'overhead applicato sui nodi essendo un framework a differenza di ZeroMQ il quale è una libreria.
+Inoltre è possibile vedere anche una differenza di comportamento in funzione del numero di core utilizzati: infatti ZeroMQ, nonostante abbia *under-the-hood* il supporto multi-thread, fatica in una configurazione multi-core a differenza di ROS2 che risulta essere penalizzato su una configurazione single-core, presumibilmente a causa dell'overhead applicato sui nodi essendo esso un framework a differenza di ZeroMQ il quale è una libreria.
 ![Insieme](docs/core_comparison.png)
+
+Una cosa che accomuna ambedue le soluzioni è la presenza un maggiore RTT all'inizio della trasmissione che tende ad abbassarsi con l'esecuzione dei nodi: esso è giustificabile con l'overhead presente nei vari casi per la creazione di un canale di comunicazione in quanto i nodi trasmettono già dall'inizio nel mentre esso viene creato.
 
 Si può concludere, quindi, dicendo che ambedue le soluzioni abbiano dei vantaggi e degli svantaggi nel loro utilizzo, a seconda che si lavori con sistemi che possano trarre vantaggio da più core e dalla tipologia di pattern richiesto.
 
