@@ -6,7 +6,7 @@
 - ROS2 Foxy Fitzroy
 - ZeroMQ 4.3.2
 - Taskset, per impostare l'affinità dei processi.
-- PlotJuggler
+- PlotJuggler 3.7.1
 
 ## Download
 ```sh
@@ -34,8 +34,10 @@ abbiamo a nostra disposizione i core 1, 2 e 3.
 Si è anche scelto di eseguire i nodi su un singolo core al fine di comparare i risultati con l'esecuzione su più core.
 #### Impostazione di PlotJuggler
 - ZeroMQ:  
+
 ![Plotjuggler con ZeroMQ](plotj1.png)
 - ROS2:
+
 ![Plotjuggler con ROS2](plotj2.png)
 
 Al fine di leggere in tempo reale i dati del topic telemetria di ROS2, Plotjuggler richiede che sulla macchina sia esso installato. 
