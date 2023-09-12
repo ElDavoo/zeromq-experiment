@@ -180,7 +180,7 @@ Inoltre è possibile vedere anche una differenza di comportamento in funzione de
 
 Una cosa che accomuna ambedue le soluzioni è la presenza un maggiore RTT all'inizio della trasmissione che tende ad abbassarsi con l'esecuzione dei nodi: esso è giustificabile con l'overhead presente nei vari casi per la creazione di un canale di comunicazione in quanto i nodi trasmettono già dall'inizio nel mentre esso viene creato.
 
-Si può concludere, quindi, dicendo che ambedue le soluzioni abbiano dei vantaggi e degli svantaggi nel loro utilizzo, a seconda che si lavori con sistemi che possano trarre vantaggio da più core e dalla tipologia di pattern richiesto.
+Si può concludere, quindi, dicendo che ambedue le soluzioni abbiano dei vantaggi e degli svantaggi nel loro utilizzo, a seconda che si lavori con sistemi che possano trarre vantaggio da più core e dalla tipologia di pattern richiesto. Ultima ma non meno importante considerazione da fare è che la versione di ROS2 utilizzata è in fase EOL e risultano notevoli miglioramenti nelle versioni più recenti, in particolar modo sul layer DDS, che potrebbero confutare alcuni dei dati rilevati.
 
 # Riproduzione del progetto
 Seguire la
